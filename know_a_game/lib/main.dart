@@ -21,12 +21,15 @@ class MyApp extends StatelessWidget {
             appBar: AppBar(
               title: Text(pageTitle),
             ),
-            body: new ListView(
-                children: List.generate(availableGames.length, (index) {
-              return Center(
-                child: GameCard(
-                    game: availableGames[index], item: availableGames[index]),
-              );
-            }))));
+            body: new Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: new ListView(
+                  children: List.generate(availableGames.length, (index) {
+                    return Center(
+                      child: GameCard(
+                          game: availableGames[index], item: availableGames[index]),
+                    );
+                  })),
+            )));
   }
 }
