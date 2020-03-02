@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'game.dart';
-import 'gameList.dart';
 
 void main() {
   runApp(GameDetailPage(null));
@@ -17,6 +16,7 @@ void main() {
 // --noOfUsers
 
 
+// ignore: must_be_immutable
 class GameDetailPage extends StatelessWidget {
   Game game;
 
@@ -24,9 +24,6 @@ class GameDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get Available Games List
-    List<Game> availableGames = new GameList().renderGameList();
-
     return MaterialApp(
         title: game.title,
         home: Scaffold(

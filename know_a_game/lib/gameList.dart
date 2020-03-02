@@ -7,7 +7,8 @@ class GameList {
 //  gameID|this.title|publishedDate|gameDescription|imageLink|genre|developer|releaseDate|fullDescription|esrbRating|userScore|noOfUsers
 
   List renderGameList() {
-    _games.add(new Game(1,
+    _games.add(new Game(
+        1,
         "DreadOut",
         "1 June 2019",
         "A unique take on third-person action-adventure survival horror with Indonesian supernatural in veins.",
@@ -19,7 +20,8 @@ class GameList {
         "E",
         "7.5",
         "1"));
-    _games.add(new Game(2,
+    _games.add(new Game(
+        2,
         "Forza Horizon 4",
         "1 June 2016",
         "Dynamic seasons change everything at the world’s greatest automotive festival.",
@@ -31,7 +33,8 @@ class GameList {
         "E",
         "7.8",
         "Up to 12 Players"));
-    _games.add(new Game(3,
+    _games.add(new Game(
+        3,
         "Need for Speed - ProStreet",
         "1 June 2019",
         "A new spin on the Need for Speed franchise, ProStreet thrusts players into a head-to-head competition against the best street racers in a multitude of racing showdowns.",
@@ -43,7 +46,8 @@ class GameList {
         "E10",
         "6.2",
         "8 Players Online"));
-    _games.add(new Game(4,
+    _games.add(new Game(
+        4,
         "Grand Theft Auto V",
         "1 June 2017",
         "Grand Theft Auto V for PC offers players the option to explore the award-winning world of Los Santos and Blaine County in resolutions of up to 4k and beyond",
@@ -57,7 +61,8 @@ class GameList {
         "M",
         "7.8",
         "Up to 32 Players"));
-    _games.add(new Game(5,
+    _games.add(new Game(
+        5,
         "Need for Speed Rivals",
         "1 June 2018",
         "Need for Speed Rivals captures the adrenaline and intensity of the street’s ultimate rivalry between cops and racers in a stunning open road environment.",
