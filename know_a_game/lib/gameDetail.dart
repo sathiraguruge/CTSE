@@ -47,7 +47,7 @@ class GameDetailPage extends StatelessWidget {
                     margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
                     child: new Text(
                       game.fullDescription,
-                      style: new TextStyle(wordSpacing: 1.5, fontSize: 15, height: 1.5),
+                      style: new TextStyle(fontSize: 16, height: 1.5),
                       textAlign: TextAlign.justify,
                     ),
                   ),
@@ -82,7 +82,7 @@ Widget getDetailRow(String label, String value){
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         new Container(
-          child: new Text(label),
+          child: new Text(label , style: new TextStyle(fontSize: 18),),
           margin: const EdgeInsets.only(bottom: 5),
         ),
         new Column(
@@ -102,17 +102,17 @@ Widget getDetailRowHorizontal(String label, String value){
     padding: const EdgeInsets.all(10.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new Container(
-          child: new Text(label),
+          child: new Text(label, style: new TextStyle(fontSize: 18),),
           margin: const EdgeInsets.only(right: 8),
         ),
         new Column(
           children: <Widget>[
             Text(value,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.5), fontSize: 18))
+                    color: Colors.black.withOpacity(0.5), fontSize: 28))
           ],
         )
       ],

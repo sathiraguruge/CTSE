@@ -35,7 +35,8 @@ class GameCard extends StatelessWidget {
               new Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: new Text(game.title,
-                    style: Theme.of(context).textTheme.title),
+                    style: new TextStyle(
+                        fontSize: 30, letterSpacing: 1.5, height: 1)),
               ),
               // Image
               new Container(
@@ -58,11 +59,12 @@ class GameCard extends StatelessWidget {
                   ],
                 ),
               ),
+              // Game Description
               Container(
                 margin: const EdgeInsets.only(left: 10, bottom: 5),
                 child: new Text(
                   game.gameDescription,
-                  style: new TextStyle(letterSpacing: 1, wordSpacing: 1),
+                  style: new TextStyle(wordSpacing: 1, height: 1.5),
                 ),
               )
             ],
