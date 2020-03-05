@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream:know_a_game/lib/gameDetail.dart
-=======
 import 'package:igamer/pageTitle.dart';
->>>>>>> Stashed changes:igamer/igamer/lib/gameDetail.dart
 import 'game.dart';
 
 void main() {
@@ -37,10 +34,6 @@ class GameDetailPage extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-<<<<<<< Updated upstream:know_a_game/lib/gameDetail.dart
-
-=======
->>>>>>> Stashed changes:igamer/igamer/lib/gameDetail.dart
                   // Image
                   new Container(
                       padding: const EdgeInsets.all(8.0),
@@ -73,18 +66,10 @@ class GameDetailPage extends StatelessWidget {
 
                   // No of Users
                   getDetailRowHorizontal("User Score", game.noOfUsers),
-<<<<<<< Updated upstream:know_a_game/lib/gameDetail.dart
-
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
               ))),
             );
-=======
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ))),
-    );
->>>>>>> Stashed changes:igamer/igamer/lib/gameDetail.dart
   }
 }
 
