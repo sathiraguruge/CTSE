@@ -2,12 +2,12 @@ import 'game.dart';
 
 class GameList {
   final String _imageDefaultImageLocation = 'assets/images/';
-  List<Game> _games = [];
+  List<GameRecord> _games = [];
 
 //  gameID|this.title|publishedDate|gameDescription|imageLink|genre|developer|releaseDate|fullDescription|esrbRating|userScore|noOfUsers
 
   List renderGameList() {
-    _games.add(new Game(
+    _games.add(new GameRecord(
         1,
         "DreadOut",
         "1 June 2019",
@@ -20,7 +20,7 @@ class GameList {
         "E",
         "7.5",
         "1"));
-    _games.add(new Game(
+    _games.add(new GameRecord(
         2,
         "Forza Horizon 4",
         "1 June 2016",
@@ -33,7 +33,7 @@ class GameList {
         "E",
         "7.8",
         "Up to 12 Players"));
-    _games.add(new Game(
+    _games.add(new GameRecord(
         3,
         "Need for Speed - ProStreet",
         "1 June 2019",
@@ -46,7 +46,7 @@ class GameList {
         "E10",
         "6.2",
         "8 Players Online"));
-    _games.add(new Game(
+    _games.add(new GameRecord(
         4,
         "Grand Theft Auto V",
         "1 June 2017",
@@ -61,7 +61,7 @@ class GameList {
         "M",
         "7.8",
         "Up to 32 Players"));
-    _games.add(new Game(
+    _games.add(new GameRecord(
         5,
         "Need for Speed Rivals",
         "1 June 2018",

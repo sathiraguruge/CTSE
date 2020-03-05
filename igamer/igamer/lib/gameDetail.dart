@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:igamer/pageTitle.dart';
-import 'game.dart';
+import 'gameRecord.dart';
 
 void main() {
   runApp(GameDetailPage(null));
@@ -19,7 +19,7 @@ void main() {
 
 // ignore: must_be_immutable
 class GameDetailPage extends StatelessWidget {
-  Game game;
+  GameRecord game;
 
   GameDetailPage(this.game);
 

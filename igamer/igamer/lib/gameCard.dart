@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'game.dart';
+import 'gameRecord.dart';
 import 'gameDetail.dart';
 
 class GameCard extends StatelessWidget {
   const GameCard(
-      {Key key,
-        this.game,
-        this.onTap,
-        @required this.item,
-        this.selected: false})
+      {Key key, this.game, this.selected: false})
       : super(key: key);
 
-  final Game game;
-  final VoidCallback onTap;
-  final Game item;
+  final GameRecord game;
   final bool selected;
 
   @override
