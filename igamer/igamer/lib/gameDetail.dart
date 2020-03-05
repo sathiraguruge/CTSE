@@ -28,9 +28,7 @@ class GameDetailPage extends StatelessWidget {
     return MaterialApp(
         title: game.title,
         home: Scaffold(
-            appBar: AppBar(
-              title: Text(game.title),
-            ),
+            appBar: new CustomizedAppBar(game.title).getAppBar(),
             body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[

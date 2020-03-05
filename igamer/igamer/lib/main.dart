@@ -4,6 +4,7 @@ import 'gameCard.dart';
 import 'gameRecord.dart';
 import 'pageTitle.dart';
 import 'drawer.dart';
+import 'addGame.dart';
 
 void main() => runApp(MyApp());
 final pageTitle = "Available Games";
@@ -33,7 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new CustomizedAppBar(pageTitle).getAppBar(),
       body: _buildBody(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddGame()));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
         backgroundColor: Colors.orange,
