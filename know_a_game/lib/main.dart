@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     List<Game> availableGames = new GameList().renderGameList();
     return MaterialApp(
         title: pageTitle,
+        theme: ThemeData(fontFamily: 'SanFrancisco'),
         home: Scaffold(
           appBar: new CustomizedAppBar(pageTitle).getAppBar(),
           body: new Container(

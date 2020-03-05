@@ -64,7 +64,8 @@ class GameCard extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 10, bottom: 5),
                 child: new Text(
                   game.gameDescription,
-                  style: new TextStyle(wordSpacing: 1, height: 1.5),
+                  style: new TextStyle(
+                      wordSpacing: 1, height: 1.5, fontFamily: 'San Francisco'),
                 ),
               )
             ],

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class CustomizedAppBar {
@@ -8,7 +10,10 @@ class CustomizedAppBar {
 
   Widget getAppBar() {
     return new AppBar(
-      title: Text(title),
+      title: Text(
+        title,
+        style: TextStyle(fontFamily: 'NunitoSansSemiBold'),
+      ),
       backgroundColor: backgroundColor,
     );
   }

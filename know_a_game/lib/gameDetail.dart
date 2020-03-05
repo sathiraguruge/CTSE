@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:know_a_game/pageTitle.dart';
 import 'game.dart';
 
 void main() {
@@ -15,7 +16,6 @@ void main() {
 // --userScore|
 // --noOfUsers
 
-
 // ignore: must_be_immutable
 class GameDetailPage extends StatelessWidget {
   Game game;
@@ -25,56 +25,53 @@ class GameDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: game.title,
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text(game.title),
-            ),
-            body: SingleChildScrollView(
+      title: game.title,
+      theme: ThemeData(fontFamily: 'SanFrancisco'),
+      home: Scaffold(
+          appBar: new CustomizedAppBar(game.title).getAppBar(),
+          body: SingleChildScrollView(
               child: Column(
-                children: <Widget>[
+            children: <Widget>[
+              // Image
+              new Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(game.imageLink)),
 
-                  // Image
-                  new Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(game.imageLink)),
+              // Released Date
+              getDetailRow("Released On", game.releaseDate),
 
-                  // Released Date
-                  getDetailRow("Released On", game.releaseDate),
+              // Full Description
+              new Container(
+                margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
+                child: new Text(
+                  game.fullDescription,
+                  style: new TextStyle(fontSize: 16, height: 1.5),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
 
-                  // Full Description
-                  new Container(
-                    margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
-                    child: new Text(
-                      game.fullDescription,
-                      style: new TextStyle(fontSize: 16, height: 1.5),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
+              // Genre
+              getDetailRow("Genre", game.genre),
 
-                  // Genre
-                  getDetailRow("Genre", game.genre),
+              // Developer
+              getDetailRow("Developer", game.developer),
 
-                  // Developer
-                  getDetailRow("Developer", game.developer),
+              // ESRB Rating
+              getDetailRowHorizontal("ESRB Rating", game.esrbRating),
 
-                  // ESRB Rating
-                  getDetailRowHorizontal("ESRB Rating", game.esrbRating),
+              // User Score
+              getDetailRowHorizontal("User Score", game.userScore),
 
-                  // User Score
-                  getDetailRowHorizontal("User Score", game.userScore),
-
-                  // No of Users
-                  getDetailRowHorizontal("User Score", game.noOfUsers),
-
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ))),
-            );
+              // No of Users
+              getDetailRowHorizontal("User Score", game.noOfUsers),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ))),
+    );
   }
 }
 
-Widget getDetailRow(String label, String value){
+Widget getDetailRow(String label, String value) {
   return new Container(
     padding: const EdgeInsets.all(10.0),
     child: Column(
@@ -82,7 +79,10 @@ Widget getDetailRow(String label, String value){
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         new Container(
-          child: new Text(label , style: new TextStyle(fontSize: 18),),
+          child: new Text(
+            label,
+            style: new TextStyle(fontSize: 18),
+          ),
           margin: const EdgeInsets.only(bottom: 5),
         ),
         new Column(
@@ -97,7 +97,7 @@ Widget getDetailRow(String label, String value){
   );
 }
 
-Widget getDetailRowHorizontal(String label, String value){
+Widget getDetailRowHorizontal(String label, String value) {
   return new Container(
     padding: const EdgeInsets.all(10.0),
     child: Row(
@@ -105,14 +105,17 @@ Widget getDetailRowHorizontal(String label, String value){
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new Container(
-          child: new Text(label, style: new TextStyle(fontSize: 18),),
+          child: new Text(
+            label,
+            style: new TextStyle(fontSize: 18),
+          ),
           margin: const EdgeInsets.only(right: 8),
         ),
         new Column(
           children: <Widget>[
             Text(value,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.5), fontSize: 28))
+                    color: Colors.black.withOpacity(0.5), fontSize: 22))
           ],
         )
       ],
