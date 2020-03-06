@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'gameCard.dart';
-import 'gameRecord.dart';
-import 'pageTitle.dart';
-import 'drawer.dart';
+import '../database/gameRecord.dart';
+import '../common_ui_widgets/appBar.dart';
+import '../common_ui_widgets/drawer.dart';
+import '../common_ui_widgets/gameCard.dart';
+import '../common_ui_widgets/alertBox.dart';
 import 'addGame.dart';
+import 'package:connectivity/connectivity.dart';
 
 void main() => runApp(MyApp());
 final pageTitle = "Available Games";
@@ -28,15 +31,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+    } on SocketException catch (_) {
+//      new AppAlertBox(context, "Error", "No Internet Connection", "OK").showAlertDialog();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkInternetConnection(context);
     return Scaffold(
       appBar: new CustomizedAppBar(pageTitle).getAppBar(),
       body: _buildBody(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddGame()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddGame()));
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

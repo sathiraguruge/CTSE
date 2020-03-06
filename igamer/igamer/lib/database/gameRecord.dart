@@ -15,6 +15,10 @@ class GameRecord {
   final String noOfUsers;
   final DocumentReference reference;
 
+  GameRecord(this.gameID, this.title, this.publishedDate, this.gameDescription,
+      this.imageLink, this.genre, this.developer, this.releaseDate,
+      this.fullDescription, this.esrbRating, this.userScore, this.noOfUsers, this.reference);
+
   GameRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['gameID'] != null),
         assert(map['title'] != null),
