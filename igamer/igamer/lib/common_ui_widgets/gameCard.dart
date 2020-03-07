@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'gameRecord.dart';
+import '../database/gameRecord.dart';
 import 'gameDetail.dart';
 
 class GameCard extends StatelessWidget {

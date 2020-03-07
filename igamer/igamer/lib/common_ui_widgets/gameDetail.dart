@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:igamer/pageTitle.dart';
-import 'gameRecord.dart';
+import 'appBar.dart';
+import '../database/gameRecord.dart';
 
 void main() {
   runApp(GameDetailPage(null));
