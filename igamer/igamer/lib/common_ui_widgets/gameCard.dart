@@ -3,9 +3,7 @@ import '../database/gameRecord.dart';
 import 'gameDetail.dart';
 
 class GameCard extends StatelessWidget {
-  const GameCard(
-      {Key key, this.game, this.selected: false})
-      : super(key: key);
+  const GameCard({Key key, this.game, this.selected: false}) : super(key: key);
 
   final GameRecord game;
   final bool selected;
@@ -34,8 +32,9 @@ class GameCard extends StatelessWidget {
               ),
               // Image
               new Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(game.imageLink)),
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network(game.imageLink),
+              ),
               //Published Date
               new Container(
                 padding: const EdgeInsets.all(10.0),

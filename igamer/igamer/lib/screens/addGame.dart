@@ -1,11 +1,18 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:igamer/database/crud.dart';
 import 'package:igamer/database/gameRecord.dart';
+import 'package:igamer/database/imageUploader.dart';
 import '../common_ui_widgets/appBar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+import 'main.dart';
 
 void main() => runApp(AddGame());
 
@@ -18,7 +25,7 @@ class AddGame extends StatelessWidget {
       title: title,
       home: Scaffold(
         appBar: new CustomizedAppBar(title).getAppBar(),
-        body: AddGameForm(),
+        body: AddGameForm(title: title),
       ),
     );
   }
@@ -26,6 +33,10 @@ class AddGame extends StatelessWidget {
 
 // Create a Form widget.
 class AddGameForm extends StatefulWidget {
+  final String title;
+
+  AddGameForm({Key key, this.title}) : super(key: key);
+
   @override
   AddGameFormState createState() {
     return AddGameFormState();
@@ -36,6 +47,17 @@ class AddGameFormState extends State<AddGameForm> {
   final _formKey = GlobalKey<FormState>();
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _selectedESRBRating;
+  File _image;
+  TextEditingController titleController = new TextEditingController();
+  TextEditingController genreController = new TextEditingController();
+  TextEditingController developerController = new TextEditingController();
+  TextEditingController noOfUsersController = new TextEditingController();
+  TextEditingController userScoreController = new TextEditingController();
+  TextEditingController briefDescriptionController =
+      new TextEditingController();
+  TextEditingController fullDescriptionController = new TextEditingController();
+  TextEditingController publishedDateController = new TextEditingController();
+  TextEditingController releasedDateController = new TextEditingController();
 
   List _ratings = [
     "RP - Rating Pending",
@@ -49,9 +71,136 @@ class AddGameFormState extends State<AddGameForm> {
 
   @override
   void initState() {
+    super.initState();
     _dropDownMenuItems = buildAndGetDropDownMenuItems(_ratings);
     _selectedESRBRating = _dropDownMenuItems[0].value;
-    super.initState();
+    _image = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            getTextField(
+                "Game Title", "Forza Horizon", Icons.label, titleController),
+            getTextField("Genre", "Racing, Simulation, Automobile",
+                Icons.view_agenda, genreController),
+            getDatePicker(
+                "Released Date", Icons.calendar_today, releasedDateController),
+            getDatePicker(
+                "Published Date", Icons.new_releases, publishedDateController),
+            getNumberTextField(
+                "No Of Users", "2", Icons.person, true, noOfUsersController),
+            getTextArea("Brief Description", "This will appear on main screen",
+                Icons.assignment, briefDescriptionController),
+            getTextArea("Full Description", "This will appear on detail screen",
+                Icons.videogame_asset, fullDescriptionController),
+            getDropDown("ESRB Rating", Icons.rate_review),
+            getTextField("Developer", "Playground Games", Icons.build,
+                developerController),
+            getNumberTextField(
+                "User Score", "7.8", Icons.score, false, userScoreController),
+            getImagePicker(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: RaisedButton(
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Adding New Game Review'),
+                      duration: const Duration(seconds: 1),
+                    ));
+                    var random = Random();
+                    var n1 = random.nextInt(10000);
+                    ImageUploader uploader = new ImageUploader(
+                        titleController.text + "-" + n1.toString(), _image);
+                    var imageURL = await uploader.uploadFile();
+                    GameRecord game = new GameRecord(
+                        8,
+                        titleController.text,
+                        publishedDateController.text,
+                        briefDescriptionController.text,
+                        imageURL,
+                        genreController.text,
+                        developerController.text,
+                        releasedDateController.text,
+                        fullDescriptionController.text,
+                        _selectedESRBRating,
+                        userScoreController.text,
+                        noOfUsersController.text,
+                        null);
+                    await CRUD().addGame(game);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  }
+                },
+                child: Text('Submit'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future _getImage() async {
+    return ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
+      setState(() {
+        _image = file;
+      });
+    });
+  }
+
+  Future _clearImage() async {
+    setState(() {
+      _image = null;
+    });
+  }
+
+  Column getImagePicker() {
+    return (new Column(
+      children: <Widget>[
+        _image == null ? new Text('No image selected.') : Image.file(_image),
+        _image == null
+            ? new RaisedButton(
+                child: Text('Choose File'),
+                onPressed: () {
+                  _getImage();
+                },
+                color: Colors.cyan,
+              )
+            : Container(),
+        _image != null
+            ? new RaisedButton(
+                child: Text('Remove'),
+                onPressed: () {
+                  setState(() {
+                    _clearImage();
+                  });
+                },
+                color: Colors.cyan,
+              )
+            : Container(),
+        _image != null
+            ? RaisedButton(
+                child: Text('Upload File'),
+                onPressed: () {
+                  var random = Random();
+                  var n1 = random.nextInt(10000);
+                  new ImageUploader(
+                          titleController.text + "-" + n1.toString(), _image)
+                      .uploadFile();
+                },
+                color: Colors.cyan,
+              )
+            : Container()
+      ],
+    ));
   }
 
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List ratings) {
@@ -114,12 +263,6 @@ class AddGameFormState extends State<AddGameForm> {
         )));
   }
 
-  void changedDropDownItem(String selectedFruit) {
-    setState(() {
-      _selectedESRBRating = selectedFruit;
-    });
-  }
-
   Container getDropDown(String label, IconData icon) {
     return (Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -141,7 +284,9 @@ class AddGameFormState extends State<AddGameForm> {
                 child: DropdownButton(
                   value: _selectedESRBRating,
                   items: _dropDownMenuItems,
-                  onChanged: changedDropDownItem,
+                  onChanged: (pickedValue) {
+                    _selectedESRBRating = pickedValue;
+                  },
                   isExpanded: true,
                 ),
               )
@@ -152,7 +297,8 @@ class AddGameFormState extends State<AddGameForm> {
     ));
   }
 
-  Container getDatePicker(String label, IconData icon, TextEditingController controller) {
+  Container getDatePicker(
+      String label, IconData icon, TextEditingController controller) {
     final format = DateFormat("dd MMMM, yyyy");
 
     return Container(
@@ -199,66 +345,5 @@ class AddGameFormState extends State<AddGameForm> {
         controller: controller,
       ),
     ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController titleController = new TextEditingController();
-    TextEditingController genreController = new TextEditingController();
-    TextEditingController developerController = new TextEditingController();
-    TextEditingController noOfUsersController = new TextEditingController();
-    TextEditingController userScoreController = new TextEditingController();
-    TextEditingController briefDescriptionController = new TextEditingController();
-    TextEditingController fullDescriptionController = new TextEditingController();
-    TextEditingController publishedDateController = new TextEditingController();
-    TextEditingController releasedDateController = new TextEditingController();
-
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            getTextField(
-                "Game Title", "Forza Horizon", Icons.label, titleController),
-            getTextField("Genre", "Racing, Simulation, Automobile",
-                Icons.view_agenda, genreController),
-            getDatePicker("Released Date", Icons.calendar_today, releasedDateController),
-            getDatePicker("Published Date", Icons.new_releases, publishedDateController),
-            getNumberTextField(
-                "No Of Users", "2", Icons.person, true, noOfUsersController),
-            getTextArea("Brief Description", "This will appear on main screen",
-                Icons.assignment, briefDescriptionController),
-            getTextArea("Full Description", "This will appear on detail screen",
-                Icons.videogame_asset, fullDescriptionController),
-            getDropDown("ESRB Rating", Icons.rate_review),
-            getTextField("Developer", "Playground Games", Icons.build,
-                developerController),
-            getNumberTextField(
-                "User Score", "7.8", Icons.score, false, userScoreController),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: RaisedButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    GameRecord game = new GameRecord(8, titleController.text, publishedDateController.text, briefDescriptionController.text, "test", genreController.text, developerController.text, releasedDateController.text, fullDescriptionController.text, _selectedESRBRating, userScoreController.text, noOfUsersController.text, null);
-                    CRUD().addGame(game);
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Adding New Game Review'), duration: const Duration(seconds: 1),));
-                  }
-                },
-                child: Text('Submit'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  int generateGameID() {
-    var rng = new Random();
-    var l = new List.generate(12, (_) => rng.nextInt(100));
   }
 }
