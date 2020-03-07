@@ -33,11 +33,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   checkInternetConnection(BuildContext context) async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-    } on SocketException catch (_) {
-//      new AppAlertBox(context, "Error", "No Internet Connection", "OK").showAlertDialog();
-    }
+//    try {
+//      final result = await InternetAddress.lookup('google.com');
+//    } on SocketException catch (_) {
+////      new AppAlertBox(context, "Error", "No Internet Connection", "OK").showAlertDialog();
+//    }
   }
 
   @override
