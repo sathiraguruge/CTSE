@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../database/gameRecord.dart';
@@ -7,7 +6,7 @@ import '../common_ui_widgets/drawer.dart';
 import '../common_ui_widgets/gameCard.dart';
 import '../common_ui_widgets/alertBox.dart';
 import 'addGame.dart';
-import 'package:connectivity/connectivity.dart';
+import 'dart:io';
 
 void main() => runApp(MyApp());
 final pageTitle = "Available Games";
@@ -31,13 +30,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   checkInternetConnection(BuildContext context) async {
-//    try {
-//      final result = await InternetAddress.lookup('google.com');
-//    } on SocketException catch (_) {
-////      new AppAlertBox(context, "Error", "No Internet Connection", "OK").showAlertDialog();
-//    }
+    try {
+      await InternetAddress.lookup('google.com');
+    } on SocketException catch (_) {
+      new AppAlertBox(context, "Error", "No Internet Connection", "OK")
+          .showAlertDialog();
+    }
   }
 
   @override

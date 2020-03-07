@@ -35,7 +35,7 @@ class GameDetailPage extends StatelessWidget {
                   // Image
                   new Container(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(game.imageLink)),
+                      child: Image.network(game.imageLink)),
 
                   // Released Date
                   getDetailRow("Released On", game.releaseDate),
@@ -63,7 +63,7 @@ class GameDetailPage extends StatelessWidget {
                   getDetailRowHorizontal("User Score", game.userScore),
 
                   // No of Users
-                  getDetailRowHorizontal("User Score", game.noOfUsers),
+                  getDetailRowHorizontal("No of Users", game.noOfUsers),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
               ))),
