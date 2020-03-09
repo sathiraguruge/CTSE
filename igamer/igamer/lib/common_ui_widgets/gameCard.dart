@@ -28,7 +28,7 @@ class GameCard extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 10),
                 child: new Text(game.title,
                     style: new TextStyle(
-                        fontSize: 30, letterSpacing: 1.5, height: 1)),
+                        fontSize: 30, letterSpacing: 1.5, height: 1, fontFamily: 'SanFrancisco'),),
               ),
               // Image
               new Container(
@@ -46,7 +46,7 @@ class GameCard extends StatelessWidget {
                       children: <Widget>[
                         Text(game.publishedDate,
                             style: TextStyle(
-                                color: Colors.black.withOpacity(0.5))),
+                                color: Colors.black.withOpacity(0.5), fontFamily: 'NunitoSansBlack')),
                       ],
                     )
                   ],
@@ -57,7 +57,7 @@ class GameCard extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 10, bottom: 5),
                 child: new Text(
                   game.gameDescription,
-                  style: new TextStyle(wordSpacing: 1, height: 1.5),
+                  style: new TextStyle(wordSpacing: 1, height: 1.5, fontFamily: 'NunitoSans'),
                 ),
               )
             ],

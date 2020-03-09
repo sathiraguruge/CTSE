@@ -5,6 +5,8 @@ import 'package:igamer/database/gameRecord.dart';
 
 class CRUD {
 
+  final String _collection = "games";
+
   Future<void> addGame(GameRecord gameRecord) async {
     final db = Firestore.instance;
     await db.collection("games").add({
@@ -25,5 +27,9 @@ class CRUD {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  Stream<QuerySnapshot> getGames(){
+    return Firestore.instance.collection(_collection).snapshots();
   }
 }

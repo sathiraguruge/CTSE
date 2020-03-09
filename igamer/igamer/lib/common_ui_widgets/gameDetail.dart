@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'appBar.dart';
 import '../database/gameRecord.dart';
+import 'drawer.dart';
 
 void main() {
   runApp(GameDetailPage(null));
@@ -29,6 +30,7 @@ class GameDetailPage extends StatelessWidget {
         title: game.title,
         home: Scaffold(
             appBar: new CustomizedAppBar(game.title).getAppBar(),
+            drawer: new CustomizedDrawer(context).getDrawer(),
             body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
@@ -45,7 +47,7 @@ class GameDetailPage extends StatelessWidget {
                     margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
                     child: new Text(
                       game.fullDescription,
-                      style: new TextStyle(fontSize: 16, height: 1.5),
+                      style: new TextStyle(fontSize: 16, height: 1.5, fontFamily: 'SanFrancisco'),
                       textAlign: TextAlign.justify,
                     ),
                   ),
@@ -57,7 +59,7 @@ class GameDetailPage extends StatelessWidget {
                   getDetailRow("Developer", game.developer),
 
                   // ESRB Rating
-                  getDetailRowHorizontal("ESRB Rating", game.esrbRating),
+                  getDetailRow("ESRB Rating", game.esrbRating),
 
                   // User Score
                   getDetailRowHorizontal("User Score", game.userScore),
@@ -79,14 +81,14 @@ Widget getDetailRow(String label, String value){
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         new Container(
-          child: new Text(label , style: new TextStyle(fontSize: 18),),
+          child: new Text(label , style: new TextStyle(fontSize: 18, fontFamily: 'NunitoSans'),),
           margin: const EdgeInsets.only(bottom: 5),
         ),
         new Column(
           children: <Widget>[
             Text(value,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.5), fontSize: 18))
+                    color: Colors.black.withOpacity(0.5), fontSize: 18, fontFamily: 'SanFrancisco'))
           ],
         )
       ],
@@ -102,14 +104,14 @@ Widget getDetailRowHorizontal(String label, String value){
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new Container(
-          child: new Text(label, style: new TextStyle(fontSize: 18),),
+          child: new Text(label, style: new TextStyle(fontSize: 18, fontFamily: 'NunitoSans'),),
           margin: const EdgeInsets.only(right: 8),
         ),
         new Column(
           children: <Widget>[
             Text(value,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.5), fontSize: 28))
+                    color: Colors.black.withOpacity(0.5), fontSize: 38, fontFamily: 'SanFrancisco'))
           ],
         )
       ],
