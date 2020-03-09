@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:igamer/common_ui_widgets/drawer.dart';
+import 'package:igamer/common_ui_widgets/inputWidgets.dart';
 import 'package:igamer/database/crud.dart';
 import 'package:igamer/database/gameRecord.dart';
 import 'package:igamer/database/imageUploader.dart';
 import '../common_ui_widgets/appBar.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,6 +25,7 @@ class AddGame extends StatelessWidget {
       home: Scaffold(
         appBar: new CustomizedAppBar(title).getAppBar(),
         body: AddGameForm(title: title),
+        drawer: new CustomizedDrawer(context).getDrawer(),
       ),
     );
   }
@@ -48,16 +48,16 @@ class AddGameFormState extends State<AddGameForm> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _selectedESRBRating;
   File _image;
-  TextEditingController titleController = new TextEditingController();
-  TextEditingController genreController = new TextEditingController();
-  TextEditingController developerController = new TextEditingController();
-  TextEditingController noOfUsersController = new TextEditingController();
-  TextEditingController userScoreController = new TextEditingController();
-  TextEditingController briefDescriptionController =
-      new TextEditingController();
-  TextEditingController fullDescriptionController = new TextEditingController();
-  TextEditingController publishedDateController = new TextEditingController();
-  TextEditingController releasedDateController = new TextEditingController();
+  TextEditingController _titleController = new TextEditingController();
+  TextEditingController _genreController = new TextEditingController();
+  TextEditingController _developerController = new TextEditingController();
+  TextEditingController _noOfUsersController = new TextEditingController();
+  TextEditingController _userScoreController = new TextEditingController();
+  TextEditingController _briefDescController = new TextEditingController();
+  TextEditingController _fullDescController = new TextEditingController();
+  TextEditingController _pubDateController = new TextEditingController();
+  TextEditingController _relDateController = new TextEditingController();
+  CommonInputWidgets _commonInputWidgets = new CommonInputWidgets();
 
   List _ratings = [
     "RP - Rating Pending",
@@ -72,13 +72,15 @@ class AddGameFormState extends State<AddGameForm> {
   @override
   void initState() {
     super.initState();
-    _dropDownMenuItems = buildAndGetDropDownMenuItems(_ratings);
+    _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
     _selectedESRBRating = _dropDownMenuItems[0].value;
     _image = null;
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -86,66 +88,77 @@ class AddGameFormState extends State<AddGameForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            getTextField(
-                "Game Title", "Forza Horizon", Icons.label, titleController),
-            getTextField("Genre", "Racing, Simulation, Automobile",
-                Icons.view_agenda, genreController),
-            getDatePicker(
-                "Released Date", Icons.calendar_today, releasedDateController),
-            getDatePicker(
-                "Published Date", Icons.new_releases, publishedDateController),
-            getNumberTextField(
-                "No Of Users", "2", Icons.person, true, noOfUsersController),
-            getTextArea("Brief Description", "This will appear on main screen",
-                Icons.assignment, briefDescriptionController),
-            getTextArea("Full Description", "This will appear on detail screen",
-                Icons.videogame_asset, fullDescriptionController),
-            getDropDown("ESRB Rating", Icons.rate_review),
-            getTextField("Developer", "Playground Games", Icons.build,
-                developerController),
-            getNumberTextField(
-                "User Score", "7.8", Icons.score, false, userScoreController),
-            getImagePicker(),
+            _getImagePicker(),
+            _commonInputWidgets.getTextField(
+                "Game Title", "Forza Horizon", Icons.label, _titleController),
+            _commonInputWidgets.getTextField("Genre", "Racing, Simulation, Automobile",
+                Icons.view_agenda, _genreController),
+            _commonInputWidgets.getDatePicker(
+                "Released Date", Icons.calendar_today, _relDateController),
+            _commonInputWidgets.getDatePicker(
+                "Published Date", Icons.new_releases, _pubDateController),
+            _commonInputWidgets.getNumberTextField(
+                "No Of Users", "2", Icons.person, true, _noOfUsersController),
+            _commonInputWidgets.getTextArea("Brief Description", "This will appear on main screen",
+                Icons.assignment, _briefDescController),
+            _commonInputWidgets.getTextArea(
+                "Full Description",
+                "This will appear on detail screen",
+                Icons.videogame_asset,
+                _fullDescController),
+            _getDropDown("ESRB Rating", Icons.rate_review),
+            _commonInputWidgets.getTextField("Developer", "Playground Games", Icons.build,
+                _developerController),
+            _commonInputWidgets.getNumberTextField(
+                "User Score", "7.8", Icons.score, false, _userScoreController),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: RaisedButton(
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Adding New Game Review'),
-                      duration: const Duration(seconds: 1),
-                    ));
-                    var random = Random();
-                    var n1 = random.nextInt(10000);
-                    ImageUploader uploader = new ImageUploader(
-                        titleController.text + "-" + n1.toString(), _image);
-                    var imageURL = await uploader.uploadFile();
-                    GameRecord game = new GameRecord(
-                        8,
-                        titleController.text,
-                        publishedDateController.text,
-                        briefDescriptionController.text,
-                        imageURL,
-                        genreController.text,
-                        developerController.text,
-                        releasedDateController.text,
-                        fullDescriptionController.text,
-                        _selectedESRBRating,
-                        userScoreController.text,
-                        noOfUsersController.text,
-                        null);
-                    await CRUD().addGame(game);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
-                  }
-                },
-                child: Text('Submit'),
-              ),
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text('Adding New Game Review'),
+                        duration: const Duration(seconds: 1),
+                      ));
+                      ImageUploader uploader = new ImageUploader(
+                          _titleController.text + "-" + _generateID().toString(),
+                          _image);
+                      var imageURL = await uploader.uploadFile();
+                      GameRecord game = new GameRecord(
+                          _generateID(),
+                          _titleController.text,
+                          _pubDateController.text,
+                          _briefDescController.text,
+                          imageURL,
+                          _genreController.text,
+                          _developerController.text,
+                          _relDateController.text,
+                          _fullDescController.text,
+                          _selectedESRBRating,
+                          _userScoreController.text,
+                          _noOfUsersController.text,
+                          null);
+                      await CRUD().addGame(game);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyHomePage()));
+                    }
+                  },
+                  child: Text('Submit'),
+                  color: Colors.orange.withOpacity(0.9),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0))),
             ),
           ],
         ),
       ),
     );
+  }
+
+  int _generateID() {
+    var random = Random();
+    return random.nextInt(10000);
   }
 
   Future _getImage() async {
@@ -162,48 +175,55 @@ class AddGameFormState extends State<AddGameForm> {
     });
   }
 
-  Column getImagePicker() {
+  Column _getImagePicker() {
     return (new Column(
       children: <Widget>[
+         Container(
+           margin: const EdgeInsets.only(bottom: 20),
+           child: Text('Cover Image', style: TextStyle(fontSize: 25),),
+         ),
         _image == null ? new Text('No image selected.') : Image.file(_image),
         _image == null
             ? new RaisedButton(
-                child: Text('Choose File'),
+                child: Text('Choose Image'),
                 onPressed: () {
                   _getImage();
                 },
-                color: Colors.cyan,
-              )
+                color: Colors.cyan.withOpacity(0.9),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0)))
             : Container(),
         _image != null
-            ? new RaisedButton(
-                child: Text('Remove'),
-                onPressed: () {
-                  setState(() {
-                    _clearImage();
-                  });
-                },
-                color: Colors.cyan,
-              )
-            : Container(),
-        _image != null
-            ? RaisedButton(
-                child: Text('Upload File'),
-                onPressed: () {
-                  var random = Random();
-                  var n1 = random.nextInt(10000);
-                  new ImageUploader(
-                          titleController.text + "-" + n1.toString(), _image)
-                      .uploadFile();
-                },
-                color: Colors.cyan,
+            ? new Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 20),
+                child: RaisedButton(
+                    child: Container(
+                      width: 85,
+                      height: 40,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.delete),
+                          Text(
+                            'Remove')
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _clearImage();
+                      });
+                    },
+                    color: Colors.red.withOpacity(0.9),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0))),
               )
             : Container()
       ],
     ));
   }
 
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List ratings) {
+  List<DropdownMenuItem<String>> _buildAndGetDropDownMenuItems(List ratings) {
     List<DropdownMenuItem<String>> items = List();
     for (String rating in ratings) {
       items.add(DropdownMenuItem(value: rating, child: Text(rating)));
@@ -211,59 +231,7 @@ class AddGameFormState extends State<AddGameForm> {
     return items;
   }
 
-  Container getNumberTextField(String labelText, String hintText, IconData icon,
-      bool onlyDigits, TextEditingController controller) {
-    return (Container(
-      height: 100,
-      child: TextField(
-        decoration: InputDecoration(
-            labelText: labelText, hintText: hintText, icon: Icon(icon)),
-        controller: controller,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          if (onlyDigits) WhitelistingTextInputFormatter.digitsOnly
-        ],
-      ),
-    ));
-  }
-
-  Container getTextArea(String labelText, String hintText, IconData icon,
-      TextEditingController controller) {
-    return (Container(
-        margin: const EdgeInsets.only(bottom: 30),
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment(-.8, -1),
-              child: Text(labelText),
-              margin: const EdgeInsets.only(bottom: 15),
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  child: new Icon(icon),
-                ),
-                Container(
-                  width: 355,
-                  child: Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.only(left: 5),
-                      child: Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: TextField(
-                          maxLines: 8,
-                          decoration: InputDecoration(hintText: hintText),
-                          controller: controller,
-                        ),
-                      )),
-                )
-              ],
-            )
-          ],
-        )));
-  }
-
-  Container getDropDown(String label, IconData icon) {
+  Container _getDropDown(String label, IconData icon) {
     return (Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -285,7 +253,9 @@ class AddGameFormState extends State<AddGameForm> {
                   value: _selectedESRBRating,
                   items: _dropDownMenuItems,
                   onChanged: (pickedValue) {
-                    _selectedESRBRating = pickedValue;
+                    setState(() {
+                      _selectedESRBRating = pickedValue;
+                    });
                   },
                   isExpanded: true,
                 ),
@@ -297,53 +267,16 @@ class AddGameFormState extends State<AddGameForm> {
     ));
   }
 
-  Container getDatePicker(
-      String label, IconData icon, TextEditingController controller) {
-    final format = DateFormat("dd MMMM, yyyy");
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 30),
-      child: Column(children: <Widget>[
-        Container(
-          alignment: Alignment(-1, -1),
-          child: Text(label),
-          margin: const EdgeInsets.only(left: 40),
-        ),
-        Row(
-          children: <Widget>[
-            Container(
-              child: new Icon(icon),
-            ),
-            Container(
-              width: 335,
-              margin: const EdgeInsets.only(left: 20),
-              child: DateTimeField(
-                format: format,
-                controller: controller,
-                onShowPicker: (context, currentValue) {
-                  return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(1900),
-                      initialDate: currentValue ?? DateTime.now(),
-                      lastDate: DateTime(2100));
-                },
-              ),
-            )
-          ],
-        )
-      ]),
-    );
-  }
-
-  Container getTextField(String labelText, String hintText, IconData icon,
-      TextEditingController controller) {
-    return (Container(
-      height: 100,
-      child: TextField(
-        decoration: InputDecoration(
-            labelText: labelText, hintText: hintText, icon: Icon(icon)),
-        controller: controller,
-      ),
-    ));
-  }
+//  Container _getTextField(String labelText, String hintText, IconData icon,
+//      TextEditingController controller) {
+//    return (Container(
+//      height: 100,
+//      child: TextField(
+//        decoration: InputDecoration(
+//            labelText: labelText, hintText: hintText, icon: Icon(icon)),
+//        controller: controller,
+//      ),
+//    ));
+//  }
 }

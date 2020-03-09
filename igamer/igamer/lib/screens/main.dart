@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:igamer/database/crud.dart';
 import '../database/gameRecord.dart';
 import '../common_ui_widgets/appBar.dart';
 import '../common_ui_widgets/drawer.dart';
@@ -30,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  checkInternetConnection(BuildContext context) async {
+  _checkInternetConnection(BuildContext context) async {
     try {
       await InternetAddress.lookup('google.com');
     } on SocketException catch (_) {
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    checkInternetConnection(context);
+    _checkInternetConnection(context);
     return Scaffold(
       appBar: new CustomizedAppBar(pageTitle).getAppBar(),
       body: _buildBody(context),
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('games').snapshots(),
+      stream: new CRUD().getGames(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(

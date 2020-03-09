@@ -8,7 +8,7 @@ class CustomizedAppBar {
 
   Widget getAppBar() {
     return new AppBar(
-      title: Text(title),
+      title: Text(title, style: TextStyle(fontSize: 25, fontFamily: 'SanFrancisco'),),
       backgroundColor: backgroundColor,
     );
   }

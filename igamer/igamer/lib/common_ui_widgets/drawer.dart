@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:igamer/screens/about.dart';
+import 'package:igamer/screens/help.dart';
+import 'package:igamer/screens/main.dart';
 
 class CustomizedDrawer {
   final Color backgroundColor = Colors.orange;
@@ -16,11 +19,11 @@ class CustomizedDrawer {
               children: <Widget>[
                 new Container(
                   child: Text('iGamer',
-                    style: TextStyle(fontSize: 38, letterSpacing: 1.5 ),),
+                    style: TextStyle(fontSize: 38, letterSpacing: 1.5 , fontFamily: 'NunitoSansSemiBold'),),
                 ),
                 new Container(
                   child: new Image.asset('assets/images/gamer.png'),
-                  height: 90,
+                  height: 80,
                   width: 100,
                 )
               ],
@@ -28,12 +31,18 @@ class CustomizedDrawer {
             decoration: BoxDecoration(color: Colors.orange),
           ),
           ListTile(
-            title: Text('Help'),
-            onTap: () => {Navigator.pop(context)},
+            title: Text('Home', style: TextStyle(fontFamily: 'NunitoSansSemiBold', fontSize: 19),),
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => new MyHomePage()))},
           ),
           ListTile(
-            title: Text('About App'),
-            onTap: () => {Navigator.pop(context)},
+            title: Text('Help', style: TextStyle(fontFamily: 'NunitoSansSemiBold', fontSize: 19),),
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => new HelpScreenPage()))},
+          ),
+          ListTile(
+            title: Text('About App', style: TextStyle(fontFamily: 'NunitoSansSemiBold', fontSize: 19),),
+            onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => new AboutScreenPage()))},
           )
         ],
       ),
