@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import '../database/gameRecord.dart';
 import 'gameDetail.dart';
 
@@ -32,8 +34,31 @@ class GameCard extends StatelessWidget {
               ),
               // Image
               new Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(game.imageLink),
+//                child: Image.network(game.imageLink),
+                child: CachedNetworkImage(
+                  imageUrl: game.imageLink,
+                  placeholder: (context, url) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: JumpingDotsProgressIndicator(fontSize: 20, numberOfDots: 5, dotSpacing: 10, milliseconds: 250,),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                    child: Center(
+                      child: Image.asset("assets/images/no-image-available.png"),
+                    ),
+                  ),
+                ),
               ),
               //Published Date
               new Container(
@@ -61,7 +86,7 @@ class GameCard extends StatelessWidget {
                 ),
               )
             ],
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
         ));
   }
