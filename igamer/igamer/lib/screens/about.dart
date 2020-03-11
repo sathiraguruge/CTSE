@@ -59,7 +59,7 @@ class AboutScreenPage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 70),
+                margin: const EdgeInsets.only(top: 20),
                 child: RaisedButton(
                   child: Text(
                     'Terms and Conditions',
