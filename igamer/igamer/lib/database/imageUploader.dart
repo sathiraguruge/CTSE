@@ -2,14 +2,17 @@ import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To F
 import 'package:path/path.dart' as Path;
 import 'dart:io';
 
+// This class is used for uploading an Image to firebase
 class ImageUploader {
   String _imagePath;
   File _image;
   String __uploadedFileURL = "null";
   final String _remotePath = "images/";
 
+  // Constructor
   ImageUploader(this._imagePath, this._image);
 
+  // this function upload the image to the firebase a returns the downloadable image link in return
   Future<String> uploadFile() async {
     StorageReference storageReference = FirebaseStorage.instance
         .ref()

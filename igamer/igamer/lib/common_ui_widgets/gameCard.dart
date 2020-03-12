@@ -4,6 +4,7 @@ import 'package:progress_indicators/progress_indicators.dart';
 import '../database/gameRecord.dart';
 import 'gameDetail.dart';
 
+// this class contains methods and attributes used for Card in the List in the app
 class GameCard extends StatelessWidget {
   const GameCard({Key key, this.game, this.selected: false}) : super(key: key);
 
@@ -21,7 +22,7 @@ class GameCard extends StatelessWidget {
         child: new InkWell(
           onTap: () => {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GameDetailPage(game)))
+                MaterialPageRoute(builder: (context) => GameDetailPage(game))) // if the card is pressed navigate to Detailed Screen
           },
           child: Column(
             children: <Widget>[
@@ -32,7 +33,7 @@ class GameCard extends StatelessWidget {
                     style: new TextStyle(
                         fontSize: 30, letterSpacing: 1.5, height: 1, fontFamily: 'SanFrancisco'),),
               ),
-              // Image
+              // Image of the Game
               new Container(
 //                child: Image.network(game.imageLink),
                 child: CachedNetworkImage(
