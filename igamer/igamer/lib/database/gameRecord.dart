@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// This class contains attributes and relevant methods for the Game entity
 class GameRecord {
   final int gameID;
   final String title;
@@ -15,10 +16,13 @@ class GameRecord {
   final String noOfUsers;
   final DocumentReference reference;
 
+  // Constructor
   GameRecord(this.gameID, this.title, this.publishedDate, this.gameDescription,
       this.imageLink, this.genre, this.developer, this.releaseDate,
       this.fullDescription, this.esrbRating, this.userScore, this.noOfUsers, this.reference);
 
+  // this function maps the attributes received from map to GameRecord class
+  // meanwhile this function also asserts if the all the mapping attributes are null
   GameRecord.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['gameID'] != null),
         assert(map['title'] != null),

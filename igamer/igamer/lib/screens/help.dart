@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:igamer/common_ui_widgets/appBar.dart';
 import 'package:igamer/common_ui_widgets/drawer.dart';
 
+// Name of the page
+final String pageTitle = "Help";
+
+// Main method
 void main() {
   runApp(MaterialApp(home: HelpScreenPage()));
 }
-
-final String pageTitle = "Help";
 
 class HelpScreenPage extends StatelessWidget {
   @override
@@ -15,6 +17,7 @@ class HelpScreenPage extends StatelessWidget {
     return new Scaffold(
       body: new Stack(
         children: <Widget>[
+          // Background Image
           new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
@@ -38,8 +41,8 @@ class HelpScreenPage extends StatelessWidget {
           )
         ],
       ),
-      drawer: new CustomizedDrawer(context).getDrawer(),
-      appBar: new CustomizedAppBar(pageTitle).getAppBar(),
+      drawer: new CustomizedDrawer(context).getDrawer(), // getting Custom Built Drawer
+      appBar: new CustomizedAppBar(pageTitle).getAppBar(), // getting Custom Built App Bar
     );
   }
 }

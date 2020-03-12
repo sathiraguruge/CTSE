@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:igamer/common_ui_widgets/appBar.dart';
 import 'package:igamer/common_ui_widgets/drawer.dart';
 
+// Page Title
+final String pageTitle = "About";
+
+// Main method
 void main() {
   runApp(MaterialApp(
     home: AboutScreenPage(),
@@ -10,14 +14,13 @@ void main() {
   ));
 }
 
-final String pageTitle = "About";
-
 class AboutScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Stack(
         children: <Widget>[
+          // background image
           new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(

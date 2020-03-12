@@ -3,10 +3,13 @@ import 'package:igamer/database/gameRecord.dart';
 
 //  gameID|this.title|publishedDate|gameDescription|imageLink|genre|developer|releaseDate|fullDescription|esrbRating|userScore|noOfUsers
 
+// This class contains the necessary CRUD actions and attributes for the games used in the app
 class CRUD {
 
+  // Collection name
   final String _collection = "games";
 
+  // Add a new game
   Future<void> addGame(GameRecord gameRecord) async {
     final db = Firestore.instance;
     await db.collection("games").add({
@@ -29,6 +32,7 @@ class CRUD {
     });
   }
 
+  // Get all games
   Stream<QuerySnapshot> getGames(){
     return Firestore.instance.collection(_collection).snapshots();
   }

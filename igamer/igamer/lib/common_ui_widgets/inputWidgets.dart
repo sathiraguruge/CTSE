@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
+// this class contains all the common input widgets used in the app
 class CommonInputWidgets {
+
+  // this function returns a TextField
   Container getTextField(String labelText, String hintText, IconData icon,
       TextEditingController controller) {
     return (Container(
@@ -17,6 +20,7 @@ class CommonInputWidgets {
     ));
   }
 
+  // this function return a date picker
   Container getDatePicker(
       String label, IconData icon, TextEditingController controller) {
     final format = DateFormat("dd MMMM, yyyy");
@@ -55,6 +59,8 @@ class CommonInputWidgets {
     );
   }
 
+  // this function returns a Number Text Field
+  // if the parameter onlyDigits is true , only digits can be entered (not point values)
   Container getNumberTextField(String labelText, String hintText, IconData icon,
       bool onlyDigits, TextEditingController controller) {
     return (Container(
@@ -71,6 +77,7 @@ class CommonInputWidgets {
     ));
   }
 
+  // this function returns a Text Area
   Container getTextArea(String labelText, String hintText, IconData icon,
       TextEditingController controller) {
     return (Container(

@@ -3,12 +3,14 @@ import 'package:igamer/screens/about.dart';
 import 'package:igamer/screens/help.dart';
 import 'package:igamer/screens/main.dart';
 
+// this class contains attributes and methods for App Drawer
 class CustomizedDrawer {
   final Color backgroundColor = Colors.orange;
   BuildContext context;
 
   CustomizedDrawer(this.context);
 
+  // this function returns a Customized App Drawer
   Widget getDrawer() {
     return new Drawer(
       child: ListView(
