@@ -95,33 +95,33 @@ class AddGameFormState extends State<AddGameForm> {
           children: <Widget>[
             _getImagePicker(),
             _commonInputWidgets.getTextField(
-                "Game Title", "Forza Horizon", Icons.label, _titleController),
+                "Game Title", "Forza Horizon", Icons.label, _titleController, "Game title field cannot be empty"),
             _commonInputWidgets.getTextField(
                 "Genre",
                 "Racing, Simulation, Automobile",
                 Icons.view_agenda,
-                _genreController),
+                _genreController, "Genre field cannot be empty"),
             _commonInputWidgets.getDatePicker(
-                "Released Date", Icons.calendar_today, _relDateController),
+                "Released Date", Icons.calendar_today, _relDateController, "Released Date field cannot be empty"),
             _commonInputWidgets.getDatePicker(
-                "Published Date", Icons.new_releases, _pubDateController),
+                "Published Date", Icons.new_releases, _pubDateController, "Published Date field cannot be empty"),
             _commonInputWidgets.getNumberTextField(
-                "No Of Users", "2", Icons.person, true, _noOfUsersController),
+                "No Of Users", "2", Icons.person, true, _noOfUsersController, "No. of users field cannot be empty"),
             _commonInputWidgets.getTextArea(
                 "Brief Description",
                 "This will appear on main screen",
                 Icons.assignment,
-                _briefDescController),
+                _briefDescController, "Brief Description field cannot be empty"),
             _commonInputWidgets.getTextArea(
                 "Full Description",
                 "This will appear on detail screen",
                 Icons.videogame_asset,
-                _fullDescController),
+                _fullDescController, "Full Description field cannot be empty"),
             _getDropDown("ESRB Rating", Icons.rate_review),
             _commonInputWidgets.getTextField("Developer", "Playground Games",
-                Icons.build, _developerController),
+                Icons.build, _developerController, "Developer field cannot be empty"),
             _commonInputWidgets.getNumberTextField(
-                "User Score", "7.8", Icons.score, false, _userScoreController),
+                "User Score", "7.8", Icons.score, false, _userScoreController, "User Score field cannot be empty"),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: RaisedButton(

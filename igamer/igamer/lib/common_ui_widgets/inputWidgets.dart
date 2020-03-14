@@ -9,20 +9,26 @@ class CommonInputWidgets {
 
   // this function returns a TextField
   Container getTextField(String labelText, String hintText, IconData icon,
-      TextEditingController controller) {
+      TextEditingController controller, String validator) {
     return (Container(
       height: 100,
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
+        validator: (value){
+          if(value.isEmpty){
+            return validator;
+          }
+          return null;
+        },
       ),
     ));
   }
 
   // this function return a date picker
   Container getDatePicker(
-      String label, IconData icon, TextEditingController controller) {
+      String label, IconData icon, TextEditingController controller, String validator) {
     final format = DateFormat("dd MMMM, yyyy");
 
     return Container(
@@ -51,6 +57,13 @@ class CommonInputWidgets {
                       initialDate: currentValue ?? DateTime.now(),
                       lastDate: DateTime(2100));
                 },
+                  validator: (value) {
+                    if (value != null) {
+                      return null;
+                    } else {
+                      return validator;
+                    }
+                  }
               ),
             )
           ],
@@ -62,13 +75,19 @@ class CommonInputWidgets {
   // this function returns a Number Text Field
   // if the parameter onlyDigits is true , only digits can be entered (not point values)
   Container getNumberTextField(String labelText, String hintText, IconData icon,
-      bool onlyDigits, TextEditingController controller) {
+      bool onlyDigits, TextEditingController controller, String validator ) {
     return (Container(
       height: 100,
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
+        validator: (value){
+          if(value.isEmpty){
+            return validator;
+          }
+          return null;
+        },
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
           if (onlyDigits) WhitelistingTextInputFormatter.digitsOnly
@@ -79,7 +98,7 @@ class CommonInputWidgets {
 
   // this function returns a Text Area
   Container getTextArea(String labelText, String hintText, IconData icon,
-      TextEditingController controller) {
+      TextEditingController controller, String validator) {
     return (Container(
         margin: const EdgeInsets.only(bottom: 30),
         child: Column(
@@ -101,10 +120,16 @@ class CommonInputWidgets {
                       margin: const EdgeInsets.only(left: 5),
                       child: Padding(
                         padding: EdgeInsets.all(1.0),
-                        child: TextField(
+                        child: TextFormField(
                           maxLines: 8,
                           decoration: InputDecoration(hintText: hintText),
                           controller: controller,
+                          validator: (value){
+                            if(value.isEmpty){
+                              return validator;
+                            }
+                            return null;
+                          },
                         ),
                       )),
                 )
