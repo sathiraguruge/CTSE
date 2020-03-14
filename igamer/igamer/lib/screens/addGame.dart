@@ -122,9 +122,11 @@ class AddGameFormState extends State<AddGameForm> {
                 Icons.build, _developerController, "Developer field cannot be empty"),
             _commonInputWidgets.getNumberTextField(
                 "User Score", "7.8", Icons.score, false, _userScoreController, "User Score field cannot be empty"),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: RaisedButton(
+
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+                new RaisedButton(
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       Scaffold.of(context).showSnackBar(SnackBar(
@@ -158,10 +160,31 @@ class AddGameFormState extends State<AddGameForm> {
                               builder: (context) => MyHomePage()));
                     }
                   },
-                  child: Text('Submit'),
+                  padding: const EdgeInsets.all(10.0),
+                  child: new Text('Submit'),
                   color: Colors.orange.withOpacity(0.9),
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0))),
+
+                new RaisedButton(
+                  onPressed: (){
+                  _formKey.currentState.reset();
+                   _clearImage();
+                  _titleController.clear();
+                  _genreController.clear();
+                  _relDateController.clear();
+                  _pubDateController.clear();
+                  _noOfUsersController.clear();
+                  _briefDescController.clear();
+                  _fullDescController.clear();
+                  _developerController.clear();
+                  _userScoreController.clear();
+                },
+                padding: const EdgeInsets.all(10.0),
+                child: new Text('Reset'),
+                color: Colors.orange.withOpacity(0.9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(10.0)))],
             ),
           ],
         ),
