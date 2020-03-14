@@ -17,7 +17,7 @@ class CommonInputWidgets {
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
         validator: (value){
-          if(value.isEmpty){
+          if(value == null || value.isEmpty){
             return validator;
           }
           return null;
@@ -83,7 +83,7 @@ class CommonInputWidgets {
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
         validator: (value){
-          if(value.isEmpty){
+          if(value == null || value.isEmpty){
             return validator;
           }
           return null;
@@ -125,7 +125,7 @@ class CommonInputWidgets {
                           decoration: InputDecoration(hintText: hintText),
                           controller: controller,
                           validator: (value){
-                            if(value.isEmpty){
+                            if(value == null || value.isEmpty){
                               return validator;
                             }
                             return null;
