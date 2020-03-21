@@ -23,8 +23,8 @@ class GameRecord {
 
   // this function maps the attributes received from map to GameRecord class
   // meanwhile this function also asserts if the all the mapping attributes are null
-  GameRecord.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['gameID'] != null),
+  GameRecord.fromMap(Map<String, dynamic> map, {this.reference}):
+        assert(map['gameID'] != null),
         assert(map['title'] != null),
         assert(map['publishedDate'] != null),
         assert(map['gameDescription'] != null),
@@ -49,8 +49,26 @@ class GameRecord {
         userScore = map['userScore'],
         noOfUsers = map['noOfUsers'];
 
-  GameRecord.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+  // this function maps the attributes received to map to GameRecord class
+  Map<String, dynamic> toMap(){
+    return {
+      'gameID': gameID,
+      'title': title,
+      'publishedDate': publishedDate,
+      'gameDescription': gameDescription,
+      'imageLink': imageLink,
+      'genre': genre,
+      'developer': developer,
+      'releaseDate': releaseDate,
+      'fullDescription': fullDescription,
+      'esrbRating': esrbRating,
+      'userScore': userScore,
+      'noOfUsers': noOfUsers,
+    };
+  }
+
+  GameRecord.fromSnapshot(DocumentSnapshot snapshot):
+        this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
   String toString() => "Record<$title:$title>";

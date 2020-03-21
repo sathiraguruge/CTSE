@@ -48,6 +48,7 @@ class AddGameForm extends StatefulWidget {
 
 class AddGameFormState extends State<AddGameForm> {
   final _formKey = GlobalKey<FormState>();
+  FocusNode focusNode;
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _selectedESRBRating;
   File _image;
@@ -79,6 +80,7 @@ class AddGameFormState extends State<AddGameForm> {
   @override
   void initState() {
     super.initState();
+    focusNode = FocusNode();
     _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
     _selectedESRBRating = _dropDownMenuItems[0].value;
     _image = null;
@@ -95,38 +97,39 @@ class AddGameFormState extends State<AddGameForm> {
           children: <Widget>[
             _getImagePicker(),
             _commonInputWidgets.getTextField(
-                "Game Title", "Forza Horizon", Icons.label, _titleController, "Game title field cannot be empty"),
+                "Game Title", "Forza Horizon", Icons.label, _titleController, "Game title field cannot be empty", focusNode),
             _commonInputWidgets.getTextField(
                 "Genre",
                 "Racing, Simulation, Automobile",
                 Icons.view_agenda,
-                _genreController, "Genre field cannot be empty"),
+                _genreController, "Genre field cannot be empty", focusNode),
             _commonInputWidgets.getDatePicker(
-                "Released Date", Icons.calendar_today, _relDateController, "Released Date field cannot be empty"),
+                "Released Date", Icons.calendar_today, _relDateController, "Released Date field cannot be empty", focusNode),
             _commonInputWidgets.getDatePicker(
-                "Published Date", Icons.new_releases, _pubDateController, "Published Date field cannot be empty"),
+                "Published Date", Icons.new_releases, _pubDateController, "Published Date field cannot be empty", focusNode),
             _commonInputWidgets.getNumberTextField(
-                "No Of Users", "2", Icons.person, true, _noOfUsersController, "No. of users field cannot be empty"),
+                "No Of Users", "2", Icons.person, true, _noOfUsersController, "No. of users field cannot be empty", focusNode),
             _commonInputWidgets.getTextArea(
                 "Brief Description",
                 "This will appear on main screen",
                 Icons.assignment,
-                _briefDescController, "Brief Description field cannot be empty"),
+                _briefDescController, "Brief Description field cannot be empty", focusNode),
             _commonInputWidgets.getTextArea(
                 "Full Description",
                 "This will appear on detail screen",
                 Icons.videogame_asset,
-                _fullDescController, "Full Description field cannot be empty"),
+                _fullDescController, "Full Description field cannot be empty", focusNode),
             _getDropDown("ESRB Rating", Icons.rate_review),
             _commonInputWidgets.getTextField("Developer", "Playground Games",
-                Icons.build, _developerController, "Developer field cannot be empty"),
+                Icons.build, _developerController, "Developer field cannot be empty", focusNode),
             _commonInputWidgets.getNumberTextField(
-                "User Score", "7.8", Icons.score, false, _userScoreController, "User Score field cannot be empty"),
+                "User Score", "7.8", Icons.score, false, _userScoreController, "User Score field cannot be empty", focusNode),
 
         new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
                 new RaisedButton(
+                    padding: const EdgeInsets.all(10.0),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       Scaffold.of(context).showSnackBar(SnackBar(
@@ -160,16 +163,16 @@ class AddGameFormState extends State<AddGameForm> {
                               builder: (context) => MyHomePage()));
                     }
                   },
-                  padding: const EdgeInsets.all(10.0),
                   child: new Text('Submit'),
                   color: Colors.orange.withOpacity(0.9),
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0))),
 
                 new RaisedButton(
+                    padding: const EdgeInsets.all(10.0),
                   onPressed: (){
                   _formKey.currentState.reset();
-                   _clearImage();
+                  _clearImage();
                   _titleController.clear();
                   _genreController.clear();
                   _relDateController.clear();
@@ -177,10 +180,10 @@ class AddGameFormState extends State<AddGameForm> {
                   _noOfUsersController.clear();
                   _briefDescController.clear();
                   _fullDescController.clear();
+                  _getlist();
                   _developerController.clear();
                   _userScoreController.clear();
                 },
-                padding: const EdgeInsets.all(10.0),
                 child: new Text('Reset'),
                 color: Colors.orange.withOpacity(0.9),
                 shape: RoundedRectangleBorder(
@@ -196,6 +199,15 @@ class AddGameFormState extends State<AddGameForm> {
   int _generateID() {
     var random = Random();
     return random.nextInt(10000);
+  }
+
+  // this function brings the drop down list to its initial state
+  Future _getlist() async {
+    return
+      setState(() {
+        _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
+        _selectedESRBRating = _dropDownMenuItems[0].value;
+      });
   }
 
   // this function picks an image from the gallery and set to _image

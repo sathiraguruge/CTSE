@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       stream: new CRUD().getGames(), // getting a list of games
       builder: (context, snapshot) {
         // checking if data exists
-        if (!snapshot.hasData)
+        if (snapshot.hasError || !snapshot.hasData)
           // if no data a Circular Progress Indicator shows up in the middle of the screen
           return Center(
               child: new Column(

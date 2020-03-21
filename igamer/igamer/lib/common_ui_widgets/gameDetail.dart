@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:igamer/database/crud.dart';
+import 'package:igamer/screens/addGame.dart';
+import 'package:igamer/screens/main.dart';
+import 'package:igamer/screens/updateGame.dart';
 import 'appBar.dart';
 import '../database/gameRecord.dart';
 import 'drawer.dart';
@@ -57,6 +61,33 @@ class GameDetailPage extends StatelessWidget {
 
               // No of Users
               getDetailRowHorizontal("No of Users", game.noOfUsers),
+
+              new ListTile(
+                trailing: RaisedButton(
+                  child: Text("Edit"),
+                  color: Colors.blue,
+                  onPressed: (){
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => new UpdateGame())); // Navigates to Update Game screen
+                  },
+                ),
+              ),
+
+              new ListTile(
+                trailing: RaisedButton(
+                  child: Text("Delete"),
+                  color: Colors.red,
+                  onPressed: (){
+                    try{
+                      new CRUD().deleteGame(game.reference);
+                    }catch(e){
+                      print(e);
+                    }
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => new MyHomePage())); // Navigates to Add Game screen
+                  },
+                ),
+              )
             ],
             crossAxisAlignment: CrossAxisAlignment.start,
           ))),
