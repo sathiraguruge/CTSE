@@ -138,7 +138,8 @@ class CommonInputWidgets {
                 Container(
                   width: 355,
                   child: Card(
-                      color: Colors.white,
+                      color: Colors.transparent,
+                      elevation: 0,
                       margin: const EdgeInsets.only(left: 5),
                       child: Padding(
                         padding: EdgeInsets.all(1.0),
@@ -168,5 +169,4 @@ class CommonInputWidgets {
           ],
         )));
   }
-
 }

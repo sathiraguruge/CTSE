@@ -47,8 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _checkInternetConnection(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: new CustomizedAppBar(pageTitle).getAppBar(), // Calling Custom build app bar
       body: _buildBody(context),
