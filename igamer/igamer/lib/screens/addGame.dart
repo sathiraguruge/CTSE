@@ -287,7 +287,7 @@ class AddGameFormState extends State<AddGameForm> {
             style: TextStyle(fontSize: 25),
           ),
         ),
-        _image == null ? new Text('No image selected.') : Image.file(_image),
+        _image == null ? new Text('No image selected.') : Image.file(_image, height: 187, width: 400, fit: BoxFit.fitWidth,),
         // if no image is selected show Text else show the image
         _image == null // if no image is selected, show Choose Image button
             ? new RaisedButton(

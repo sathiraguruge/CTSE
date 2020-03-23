@@ -34,7 +34,7 @@ class GameDetailPage extends StatelessWidget {
               new Container(
                 padding: const EdgeInsets.all(8.0),
                 child: CachedNetworkImage(
-                  imageUrl: game.imageLink,
+                  imageUrl: game.imageLink, width: 400, height: 187, fit: BoxFit.fitWidth,
                   placeholder: (context, url) => Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -66,70 +66,73 @@ class GameDetailPage extends StatelessWidget {
                 ),
               ),
 
-              // Released Date
-              getDetailRow("Released On", game.releaseDate),
+                  // Released Date
+                  getDetailRow("Released On", game.releaseDate),
 
-              // Full Description
-              new Container(
-                margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
-                child: new Text(
-                  game.fullDescription,
-                  style: new TextStyle(
-                      fontSize: 16, height: 1.5, fontFamily: 'SanFrancisco'),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
+                  // Full Description
+                  new Container(
+                    margin: const EdgeInsets.only(
+                        left: 10, bottom: 5, right: 10),
+                    child: new Text(
+                      game.fullDescription,
+                      style: new TextStyle(
+                          fontSize: 16,
+                          height: 1.5,
+                          fontFamily: 'SanFrancisco'),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
 
-              // Genre
-              getDetailRow("Genre", game.genre),
+                  // Genre
+                  getDetailRow("Genre", game.genre),
 
-              // Developer
-              getDetailRow("Developer", game.developer),
+                  // Developer
+                  getDetailRow("Developer", game.developer),
 
-              // ESRB Rating
-              getDetailRow("ESRB Rating", game.esrbRating),
+                  // ESRB Rating
+                  getDetailRow("ESRB Rating", game.esrbRating),
 
-              // User Score
-              getDetailRowHorizontal("User Score", game.userScore),
+                  // User Score
+                  getDetailRowHorizontal("User Score", game.userScore),
 
-              // No of Users
-              getDetailRowHorizontal("No of Users", game.noOfUsers),
+                  // No of Users
+                  getDetailRowHorizontal("No of Users", game.noOfUsers),
 
-              new ListTile(
-                trailing: RaisedButton(
-                  child: Text("Edit"),
-                  color: Colors.blue,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
+                  new ListTile(
+                    trailing: RaisedButton(
+                      child: Text("Edit"),
+                      color: Colors.blue,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
                                 new UpdateGame())); // Navigates to Update Game screen
-                  },
-                ),
-              ),
+                      },
+                    ),
+                  ),
 
-              new ListTile(
-                trailing: RaisedButton(
-                  child: Text("Delete"),
-                  color: Colors.red,
-                  onPressed: () {
-                    try {
-                      new CRUD().deleteGame(game.reference);
-                    } catch (e) {
-                      print(e);
-                    }
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
+                  new ListTile(
+                    trailing: RaisedButton(
+                      child: Text("Delete"),
+                      color: Colors.red,
+                      onPressed: () {
+                        try {
+                          new CRUD().deleteGame(game.reference);
+                        } catch (e) {
+                          print(e);
+                        }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
                                 new MyHomePage())); // Navigates to Add Game screen
-                  },
-                ),
-              )
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ))),
+                      },
+                    ),
+                  )
+                ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ))),
     );
   }
 
