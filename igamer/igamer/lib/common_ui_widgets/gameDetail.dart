@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:igamer/database/crud.dart';
 import 'package:igamer/screens/addGame.dart';
 import 'package:igamer/screens/main.dart';
 import 'package:igamer/screens/updateGame.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'appBar.dart';
 import '../database/gameRecord.dart';
 import 'drawer.dart';
@@ -30,8 +32,39 @@ class GameDetailPage extends StatelessWidget {
             children: <Widget>[
               // Image
               new Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(game.imageLink)),
+                padding: const EdgeInsets.all(8.0),
+                child: CachedNetworkImage(
+                  imageUrl: game.imageLink,
+                  placeholder: (context, url) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: JumpingDotsProgressIndicator(
+                                fontSize: 20,
+                                numberOfDots: 5,
+                                dotSpacing: 10,
+                                milliseconds: 250,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 10, right: 10),
+                    child: Center(
+                      child:
+                          Image.asset("assets/images/no-image-available.png"),
+                    ),
+                  ),
+                ),
+              ),
 
               // Released Date
               getDetailRow("Released On", game.releaseDate),
@@ -66,9 +99,12 @@ class GameDetailPage extends StatelessWidget {
                 trailing: RaisedButton(
                   child: Text("Edit"),
                   color: Colors.blue,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => new UpdateGame())); // Navigates to Update Game screen
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                new UpdateGame())); // Navigates to Update Game screen
                   },
                 ),
               ),
@@ -77,14 +113,17 @@ class GameDetailPage extends StatelessWidget {
                 trailing: RaisedButton(
                   child: Text("Delete"),
                   color: Colors.red,
-                  onPressed: (){
-                    try{
+                  onPressed: () {
+                    try {
                       new CRUD().deleteGame(game.reference);
-                    }catch(e){
+                    } catch (e) {
                       print(e);
                     }
                     Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => new MyHomePage())); // Navigates to Add Game screen
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                new MyHomePage())); // Navigates to Add Game screen
                   },
                 ),
               )
