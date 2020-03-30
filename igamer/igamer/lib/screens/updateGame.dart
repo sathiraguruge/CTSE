@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:igamer/common_ui_widgets/drawer.dart';
 import 'package:igamer/common_ui_widgets/inputWidgets.dart';
 import 'package:igamer/database/crud.dart';
@@ -19,6 +20,10 @@ final title = 'Update Game Review';
 void main() => runApp(UpdateGame());
 
 class UpdateGame extends StatelessWidget {
+  final GameRecord game;
+
+  const UpdateGame({Key key, this.game}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +31,7 @@ class UpdateGame extends StatelessWidget {
       home: Scaffold(
         appBar: new CustomizedAppBar(title).getAppBar(),
         //getting custom built app bar
-        body: UpdateGameForm(title: title),
+        body: UpdateGameForm(title: title, gameRecord: game),
         drawer: new CustomizedDrawer(context)
             .getDrawer(), //getting custom built app drawer
       ),
@@ -39,7 +44,7 @@ class UpdateGameForm extends StatefulWidget {
   final String title;
   final GameRecord gameRecord;
 
-  const UpdateGameForm({Key key, this.title, this.gameRecord}) : super(key: key);
+  UpdateGameForm({Key key, this.title, this.gameRecord}) : super(key: key);
 
   @override
   UpdateGameFormState createState() {
@@ -53,17 +58,18 @@ class UpdateGameFormState extends State<UpdateGameForm> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _selectedESRBRating;
   File _image;
+  bool _greyOutBackground = false;
 
-  //Initializing text editing controllers
-  TextEditingController _titleController;
-  TextEditingController _genreController;
-  TextEditingController _developerController;
-  TextEditingController _noOfUsersController;
-  TextEditingController _userScoreController;
-  TextEditingController _briefDescController;
-  TextEditingController _fullDescController;
-  TextEditingController _pubDateController;
-  TextEditingController _relDateController;
+  //Initializing text editing controllers for update operation
+  TextEditingController _titleController = new TextEditingController();
+  TextEditingController _genreController = new TextEditingController();
+  TextEditingController _relDateController = new TextEditingController();
+  TextEditingController _pubDateController = new TextEditingController();
+  TextEditingController _noOfUsersController = new TextEditingController();
+  TextEditingController _briefDescController = new TextEditingController();
+  TextEditingController _fullDescController = new TextEditingController();
+  TextEditingController _developerController = new TextEditingController();
+  TextEditingController _userScoreController = new TextEditingController();
   CommonInputWidgets _commonInputWidgets = new CommonInputWidgets();
 
   //Initializing drop down values for ESRB Ratings
@@ -81,135 +87,184 @@ class UpdateGameFormState extends State<UpdateGameForm> {
   @override
   void initState() {
     super.initState();
+
     focusNode = FocusNode();
     _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
-    _selectedESRBRating = _dropDownMenuItems[0].value;
-    _image = null;
+    _selectedESRBRating = widget.gameRecord.esrbRating;
+    _greyOutBackground = false;
+    //_image = null;
 
-    _titleController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.title:'');
-    _genreController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.genre:'');
-    _developerController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.developer:'');
-    _noOfUsersController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.noOfUsers:'');
-    _userScoreController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.userScore:'');
-    _briefDescController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.gameDescription:'');
-    _fullDescController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.fullDescription:'');
-    _pubDateController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.publishedDate:'');
-    _relDateController = TextEditingController(text: widget.gameRecord != null ? widget.gameRecord.releaseDate:'');
+    _image = new File(widget.gameRecord.imageLink);
+    Image.file(_image);
+
+    //setting values through constructor
+    _titleController = TextEditingController(text: widget.gameRecord.title != null ? widget.gameRecord.title : '');
+    _genreController = TextEditingController(text: widget.gameRecord.genre != null ? widget.gameRecord.genre : '');
+    _relDateController = TextEditingController(text: widget.gameRecord.releaseDate != null ? widget.gameRecord.releaseDate : '');
+    _pubDateController = TextEditingController(text: widget.gameRecord.publishedDate != null ? widget.gameRecord.publishedDate : '');
+    _briefDescController = TextEditingController(text: widget.gameRecord.gameDescription != null ? widget.gameRecord.gameDescription : '');
+    _fullDescController = TextEditingController(text: widget.gameRecord.fullDescription != null ? widget.gameRecord.fullDescription : '');
+    _noOfUsersController = TextEditingController(text: widget.gameRecord.noOfUsers != null ? widget.gameRecord.noOfUsers : '');
+    _developerController = TextEditingController(text: widget.gameRecord.developer != null ? widget.gameRecord.developer : '');
+    _userScoreController = TextEditingController(text: widget.gameRecord.userScore != null ? widget.gameRecord.userScore : '');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _getImagePicker(),
-            _commonInputWidgets.getTextField(
-                "Game Title", "Forza Horizon", Icons.label, _titleController, "Game title field cannot be empty", focusNode),
-            _commonInputWidgets.getTextField(
-                "Genre",
-                "Racing, Simulation, Automobile",
-                Icons.view_agenda,
-                _genreController, "Genre field cannot be empty", focusNode),
-            _commonInputWidgets.getDatePicker(
-                "Released Date", Icons.calendar_today, _relDateController, "Released Date field cannot be empty", focusNode),
-            _commonInputWidgets.getDatePicker(
-                "Published Date", Icons.new_releases, _pubDateController, "Published Date field cannot be empty", focusNode),
-            _commonInputWidgets.getNumberTextField(
-                "No Of Users", "2", Icons.person, true, _noOfUsersController, "No. of users field cannot be empty", focusNode),
-            _commonInputWidgets.getTextArea(
-                "Brief Description",
-                "This will appear on main screen",
-                Icons.assignment,
-                _briefDescController, "Brief Description field cannot be empty", focusNode),
-            _commonInputWidgets.getTextArea(
-                "Full Description",
-                "This will appear on detail screen",
-                Icons.videogame_asset,
-                _fullDescController, "Full Description field cannot be empty", focusNode),
-            _getDropDown("ESRB Rating", Icons.rate_review),
-            _commonInputWidgets.getTextField("Developer", "Playground Games",
-                Icons.build, _developerController, "Developer field cannot be empty", focusNode),
-            _commonInputWidgets.getNumberTextField(
-                "User Score", "7.8", Icons.score, false, _userScoreController, "User Score field cannot be empty", focusNode),
-
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                new RaisedButton(
-                    padding: const EdgeInsets.all(10.0),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('Updating Game Review'),
-                          duration: const Duration(seconds: 1),
-                        ));
-                        ImageUploader uploader = new ImageUploader(
-                            _titleController.text +
-                                "-" +
-                                _generateID().toString(),
-                            _image);
-                        var imageURL = await uploader.uploadFile();
-                        GameRecord game = new GameRecord(
-                            _generateID(),
-                            _titleController.text,
-                            _pubDateController.text,
-                            _briefDescController.text,
-                            imageURL,
-                            _genreController.text,
-                            _developerController.text,
-                            _relDateController.text,
-                            _fullDescController.text,
-                            _selectedESRBRating,
-                            _userScoreController.text,
-                            _noOfUsersController.text,
-                            null);
-                        await CRUD().editGame(game);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyHomePage()));
-                      }
-                    },
-                    child: new Text('Update'),
-                    color: Colors.orange.withOpacity(0.9),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0))),
-
-                new RaisedButton(
-                    padding: const EdgeInsets.all(10.0),
-                    onPressed: (){
-                      _formKey.currentState.reset();
-                      _clearImage();
-                      _titleController.clear();
-                      _genreController.clear();
-                      _relDateController.clear();
-                      _pubDateController.clear();
-                      _noOfUsersController.clear();
-                      _briefDescController.clear();
-                      _fullDescController.clear();
-                      _getlist();
-                      _developerController.clear();
-                      _userScoreController.clear();
-                    },
-                    child: new Text('Reset'),
-                    color: Colors.orange.withOpacity(0.9),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0)))],
+    return new Scaffold(
+      backgroundColor:
+      _greyOutBackground == true ? Colors.grey : Colors.transparent,
+      body: Stack(
+        children: <Widget>[
+          if (_greyOutBackground) _getCircularProgressIndicator(),
+          Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _getImagePicker(),
+                  _commonInputWidgets.getTextField(
+                      "Game Title",
+                      "Forza Horizon",
+                      Icons.label,
+                      _titleController,
+                      "Game title field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getTextField(
+                      "Genre",
+                      "Racing, Simulation, Automobile",
+                      Icons.view_agenda,
+                      _genreController,
+                      "Genre field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getDatePicker(
+                      "Released Date",
+                      Icons.calendar_today,
+                      _relDateController,
+                      "Released Date field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getDatePicker(
+                      "Published Date",
+                      Icons.new_releases,
+                      _pubDateController,
+                      "Published Date field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getNumberTextField(
+                      "No Of Users",
+                      "2",
+                      Icons.person,
+                      true,
+                      _noOfUsersController,
+                      "No. of users field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getTextArea(
+                      "Brief Description",
+                      "This will appear on main screen",
+                      Icons.assignment,
+                      _briefDescController,
+                      "Brief Description field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getTextArea(
+                      "Full Description",
+                      "This will appear on detail screen",
+                      Icons.videogame_asset,
+                      _fullDescController,
+                      "Full Description field cannot be empty",
+                      focusNode),
+                  _getDropDown("ESRB Rating", Icons.rate_review),
+                  _commonInputWidgets.getTextField(
+                      "Developer",
+                      "Playground Games",
+                      Icons.build,
+                      _developerController,
+                      "Developer field cannot be empty",
+                      focusNode),
+                  _commonInputWidgets.getNumberTextField(
+                      "User Score",
+                      "7.8",
+                      Icons.score,
+                      false,
+                      _userScoreController,
+                      "User Score field cannot be empty",
+                      focusNode),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      new RaisedButton(
+                          padding: const EdgeInsets.all(10.0),
+                          onPressed: () async {
+                            setState(() {
+                              _greyOutBackground = true;
+                            });
+                            if (_formKey.currentState.validate()) {
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text('Updating Existing Game Review'),
+                              ));
+                              ImageUploader uploader = new ImageUploader(
+                                  _titleController.text +
+                                      "-" +
+                                      widget.gameRecord.gameID.toString(),
+                                  _image);
+                              var imageURL = await uploader.uploadFile();
+                              GameRecord game = new GameRecord(
+                                widget.gameRecord.gameID,
+                                  _titleController.text,
+                                  _pubDateController.text,
+                                  _briefDescController.text,
+                                  imageURL,
+                                  _genreController.text,
+                                  _developerController.text,
+                                  _relDateController.text,
+                                  _fullDescController.text,
+                                  _selectedESRBRating,
+                                  _userScoreController.text,
+                                  _noOfUsersController.text,
+                              widget.gameRecord.reference);
+                              await CRUD().editGame(game, game.reference);
+                              setState(() {
+                                _greyOutBackground = false;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyHomePage()));
+                            }
+                          },
+                          child: new Text('Submit'),
+                          color: Colors.orange.withOpacity(0.9),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0))),
+                      new RaisedButton(
+                          padding: const EdgeInsets.all(10.0),
+                          onPressed: () {
+                            _formKey.currentState.reset();
+                            _clearImage();
+                            _titleController.clear();
+                            _genreController.clear();
+                            _relDateController.clear();
+                            _pubDateController.clear();
+                            _noOfUsersController.clear();
+                            _briefDescController.clear();
+                            _fullDescController.clear();
+                            _getlist();
+                            _developerController.clear();
+                            _userScoreController.clear();
+                          },
+                          child: new Text('Reset'),
+                          color: Colors.orange.withOpacity(0.9),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0)))
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
-  }
-
-  // this function returns a random integer between 0 and 10000
-  int _generateID() {
-    var random = Random();
-    return random.nextInt(10000);
   }
 
   // this function brings the drop down list to its initial state
@@ -329,5 +384,26 @@ class UpdateGameFormState extends State<UpdateGameForm> {
         ],
       ),
     ));
+  }
+
+  Center _getCircularProgressIndicator() {
+    return Center(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Text(
+                "Please wait",
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          ],
+        ));
   }
 }
