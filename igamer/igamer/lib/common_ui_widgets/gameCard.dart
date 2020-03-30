@@ -37,7 +37,7 @@ class GameCard extends StatelessWidget {
               new Container(
 //                child: Image.network(game.imageLink),
                 child: CachedNetworkImage(
-                  imageUrl: game.imageLink,
+                  imageUrl: game.imageLink, width: 400, height: 187, fit: BoxFit.fitWidth,
                   placeholder: (context, url) => Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

@@ -1,4 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:igamer/database/crud.dart';
+import 'package:igamer/screens/main.dart';
+import 'package:igamer/screens/updateGame.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'appBar.dart';
 import '../database/gameRecord.dart';
 import 'drawer.dart';
@@ -26,40 +31,104 @@ class GameDetailPage extends StatelessWidget {
             children: <Widget>[
               // Image
               new Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(game.imageLink)),
-
-              // Released Date
-              getDetailRow("Released On", game.releaseDate),
-
-              // Full Description
-              new Container(
-                margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
-                child: new Text(
-                  game.fullDescription,
-                  style: new TextStyle(
-                      fontSize: 16, height: 1.5, fontFamily: 'SanFrancisco'),
-                  textAlign: TextAlign.justify,
+                padding: const EdgeInsets.all(8.0),
+                child: CachedNetworkImage(
+                  imageUrl: game.imageLink, width: 400, height: 187, fit: BoxFit.fitWidth,
+                  placeholder: (context, url) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: JumpingDotsProgressIndicator(
+                                fontSize: 20,
+                                numberOfDots: 5,
+                                dotSpacing: 10,
+                                milliseconds: 250,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 10, right: 10),
+                    child: Center(
+                      child:
+                          Image.asset("assets/images/no-image-available.png"),
+                    ),
+                  ),
                 ),
               ),
 
-              // Genre
-              getDetailRow("Genre", game.genre),
+                  // Published Date
+                  getDetailRow("Published On", game.publishedDate),
 
-              // Developer
-              getDetailRow("Developer", game.developer),
+                  // Released Date
+                  getDetailRow("Released On", game.releaseDate),
 
-              // ESRB Rating
-              getDetailRow("ESRB Rating", game.esrbRating),
+                  // Full Description
+                  new Container(
+                    margin: const EdgeInsets.only(
+                        left: 10, bottom: 5, right: 10),
+                    child: new Text(
+                      game.fullDescription,
+                      style: new TextStyle(
+                          fontSize: 16,
+                          height: 1.5,
+                          fontFamily: 'SanFrancisco'),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
 
-              // User Score
-              getDetailRowHorizontal("User Score", game.userScore),
+                  // Genre
+                  getDetailRow("Genre", game.genre),
 
-              // No of Users
-              getDetailRowHorizontal("No of Users", game.noOfUsers),
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ))),
+                  // Developer
+                  getDetailRow("Developer", game.developer),
+
+                  // ESRB Rating
+                  getDetailRow("ESRB Rating", game.esrbRating),
+
+                  // User Score
+                  getDetailRowHorizontal("User Score", game.userScore),
+
+                  // No of Users
+                  getDetailRowHorizontal("No of Users", game.noOfUsers),
+
+                  //update option
+                  new ListTile(
+                    trailing: RaisedButton(
+                      child: Text("Edit"),
+                      color: Colors.blue,
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => UpdateGame(game: game)),
+                        ); // Navigates to Update Game screen
+                      },
+                    ),
+                  ),
+
+                  //delete option
+                  new ListTile(
+                    trailing: RaisedButton(
+                      child: Text("Delete"),
+                      color: Colors.red,
+                      onPressed: () {
+                        new CRUD().deleteGame(context, game.reference);
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => MyHomePage()),
+                        ); //Navigates to Home Page after deleted
+                      },
+                    ),
+                  )
+                ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ))),
     );
   }
 

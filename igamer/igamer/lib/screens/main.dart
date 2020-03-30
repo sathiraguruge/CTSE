@@ -47,8 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _checkInternetConnection(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: new CustomizedAppBar(pageTitle).getAppBar(), // Calling Custom build app bar
       body: _buildBody(context),
@@ -70,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
       stream: new CRUD().getGames(), // getting a list of games
       builder: (context, snapshot) {
         // checking if data exists
-        if (!snapshot.hasData)
+        if (snapshot.hasError || !snapshot.hasData)
           // if no data a Circular Progress Indicator shows up in the middle of the screen
           return Center(
               child: new Column(

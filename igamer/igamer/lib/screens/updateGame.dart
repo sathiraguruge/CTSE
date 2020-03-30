@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:igamer/common_ui_widgets/drawer.dart';
 import 'package:igamer/common_ui_widgets/inputWidgets.dart';
 import 'package:igamer/database/crud.dart';
@@ -13,12 +14,16 @@ import 'package:image_picker/image_picker.dart';
 import 'main.dart';
 
 // Name of the page
-final title = 'Add Game Review';
+final title = 'Update Game Review';
 
 // Main method
-void main() => runApp(AddGame());
+void main() => runApp(UpdateGame());
 
-class AddGame extends StatelessWidget {
+class UpdateGame extends StatelessWidget {
+  final GameRecord game;
+
+  const UpdateGame({Key key, this.game}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +31,7 @@ class AddGame extends StatelessWidget {
       home: Scaffold(
         appBar: new CustomizedAppBar(title).getAppBar(),
         //getting custom built app bar
-        body: AddGameForm(title: title),
+        body: UpdateGameForm(title: title, gameRecord: game),
         drawer: new CustomizedDrawer(context)
             .getDrawer(), //getting custom built app drawer
       ),
@@ -35,18 +40,19 @@ class AddGame extends StatelessWidget {
 }
 
 // Create a Form widget.
-class AddGameForm extends StatefulWidget {
+class UpdateGameForm extends StatefulWidget {
   final String title;
+  final GameRecord gameRecord;
 
-  AddGameForm({Key key, this.title}) : super(key: key);
+  UpdateGameForm({Key key, this.title, this.gameRecord}) : super(key: key);
 
   @override
-  AddGameFormState createState() {
-    return AddGameFormState();
+  UpdateGameFormState createState() {
+    return UpdateGameFormState();
   }
 }
 
-class AddGameFormState extends State<AddGameForm> {
+class UpdateGameFormState extends State<UpdateGameForm> {
   final _formKey = GlobalKey<FormState>();
   FocusNode focusNode;
   List<DropdownMenuItem<String>> _dropDownMenuItems;
@@ -54,7 +60,7 @@ class AddGameFormState extends State<AddGameForm> {
   File _image;
   bool _greyOutBackground = false;
 
-  //Initializing text editing controllers
+  //Initializing text editing controllers for update operation
   TextEditingController _titleController = new TextEditingController();
   TextEditingController _genreController = new TextEditingController();
   TextEditingController _relDateController = new TextEditingController();
@@ -81,18 +87,33 @@ class AddGameFormState extends State<AddGameForm> {
   @override
   void initState() {
     super.initState();
+
     focusNode = FocusNode();
     _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
-    _selectedESRBRating = _dropDownMenuItems[0].value;
-    _image = null;
+    _selectedESRBRating = widget.gameRecord.esrbRating;
     _greyOutBackground = false;
+    //_image = null;
+
+    _image = new File(widget.gameRecord.imageLink);
+    Image.file(_image);
+
+    //setting values through constructor
+    _titleController = TextEditingController(text: widget.gameRecord.title != null ? widget.gameRecord.title : '');
+    _genreController = TextEditingController(text: widget.gameRecord.genre != null ? widget.gameRecord.genre : '');
+    _relDateController = TextEditingController(text: widget.gameRecord.releaseDate != null ? widget.gameRecord.releaseDate : '');
+    _pubDateController = TextEditingController(text: widget.gameRecord.publishedDate != null ? widget.gameRecord.publishedDate : '');
+    _briefDescController = TextEditingController(text: widget.gameRecord.gameDescription != null ? widget.gameRecord.gameDescription : '');
+    _fullDescController = TextEditingController(text: widget.gameRecord.fullDescription != null ? widget.gameRecord.fullDescription : '');
+    _noOfUsersController = TextEditingController(text: widget.gameRecord.noOfUsers != null ? widget.gameRecord.noOfUsers : '');
+    _developerController = TextEditingController(text: widget.gameRecord.developer != null ? widget.gameRecord.developer : '');
+    _userScoreController = TextEditingController(text: widget.gameRecord.userScore != null ? widget.gameRecord.userScore : '');
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor:
-          _greyOutBackground == true ? Colors.grey : Colors.transparent,
+      _greyOutBackground == true ? Colors.grey : Colors.transparent,
       body: Stack(
         children: <Widget>[
           if (_greyOutBackground) _getCircularProgressIndicator(),
@@ -179,16 +200,16 @@ class AddGameFormState extends State<AddGameForm> {
                             });
                             if (_formKey.currentState.validate()) {
                               Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text('Adding New Game Review'),
+                                content: Text('Updating Existing Game Review'),
                               ));
                               ImageUploader uploader = new ImageUploader(
                                   _titleController.text +
                                       "-" +
-                                      _generateID().toString(),
+                                      widget.gameRecord.gameID.toString(),
                                   _image);
                               var imageURL = await uploader.uploadFile();
                               GameRecord game = new GameRecord(
-                                  _generateID(),
+                                widget.gameRecord.gameID,
                                   _titleController.text,
                                   _pubDateController.text,
                                   _briefDescController.text,
@@ -200,8 +221,8 @@ class AddGameFormState extends State<AddGameForm> {
                                   _selectedESRBRating,
                                   _userScoreController.text,
                                   _noOfUsersController.text,
-                                  null);
-                              await CRUD().addGame(game);
+                              widget.gameRecord.reference);
+                              await CRUD().editGame(game, game.reference);
                               setState(() {
                                 _greyOutBackground = false;
                               });
@@ -246,18 +267,13 @@ class AddGameFormState extends State<AddGameForm> {
     );
   }
 
-  // this function returns a random integer between 0 and 10000
-  int _generateID() {
-    var random = Random();
-    return random.nextInt(10000);
-  }
-
   // this function brings the drop down list to its initial state
   Future _getlist() async {
-    return setState(() {
-      _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
-      _selectedESRBRating = _dropDownMenuItems[0].value;
-    });
+    return
+      setState(() {
+        _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
+        _selectedESRBRating = _dropDownMenuItems[0].value;
+      });
   }
 
   // this function picks an image from the gallery and set to _image
@@ -287,40 +303,38 @@ class AddGameFormState extends State<AddGameForm> {
             style: TextStyle(fontSize: 25),
           ),
         ),
-        _image == null ? new Text('No image selected.') : Image.file(_image, height: 187, width: 400, fit: BoxFit.fitWidth,),
-        // if no image is selected show Text else show the image
+        _image == null ? new Text('No image selected.') : Image.file(_image), // if no image is selected show Text else show the image
         _image == null // if no image is selected, show Choose Image button
             ? new RaisedButton(
-                child: Text('Choose Image'),
-                onPressed: () {
-                  _getImage();
-                },
-                color: Colors.cyan.withOpacity(0.9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0)))
+            child: Text('Choose Image'),
+            onPressed: () {
+              _getImage();
+            },
+            color: Colors.cyan.withOpacity(0.9),
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(10.0)))
             : Container(),
         _image != null // if image is selected, show Remove Button
             ? new Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 20),
-                child: new RaisedButton(
-                    child: Container(
-                      width: 85,
-                      height: 40,
-                      child: Row(
-                        children: <Widget>[Icon(Icons.delete), Text('Remove')],
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _clearImage();
-                      });
-                    },
-                    color: Colors.red.withOpacity(0.80),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0))),
-              )
+          margin: const EdgeInsets.only(top: 10, bottom: 20),
+          child: RaisedButton(
+              child: Container(
+                width: 85,
+                height: 40,
+                child: Row(
+                  children: <Widget>[Icon(Icons.delete), Text('Remove')],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  _clearImage();
+                });
+              },
+              color: Colors.red.withOpacity(0.9),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(10.0))),
+        )
             : Container()
       ],
     ));
@@ -375,21 +389,21 @@ class AddGameFormState extends State<AddGameForm> {
   Center _getCircularProgressIndicator() {
     return Center(
         child: new Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          height: 50,
-          width: 50,
-          child: CircularProgressIndicator(),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          child: Text(
-            "Please wait",
-            style: TextStyle(fontSize: 18),
-          ),
-        )
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Text(
+                "Please wait",
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          ],
+        ));
   }
 }
