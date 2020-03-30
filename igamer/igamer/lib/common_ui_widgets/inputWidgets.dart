@@ -22,6 +22,9 @@ class CommonInputWidgets {
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
+        autocorrect: true,
+        autofocus: true,
+        autovalidate: true,
         validator: (value){
           if(value == null || value.isEmpty){
             return validator;
@@ -58,12 +61,6 @@ class CommonInputWidgets {
               margin: const EdgeInsets.only(left: 20),
               child: DateTimeField(
                 format: format,
-                  textInputAction: TextInputAction.next,
-                  onEditingComplete: (){
-                    FocusScope.of(new AddGameFormState().context).requestFocus(focusNode);
-                  },
-                  focusNode: new AddGameFormState().focusNode,
-                controller: controller,
                 onShowPicker: (context, currentValue) {
                   return showDatePicker(
                       context: context,
@@ -71,10 +68,15 @@ class CommonInputWidgets {
                       initialDate: currentValue ?? DateTime.now(),
                       lastDate: DateTime(2100));
                 },
+                  controller: controller,
+                  autocorrect: true,
+                  autofocus: true,
+                  autovalidate: true,
                   validator: (value) {
                     if (value != null) {
                       return null;
-                    } else {
+                    }
+                    else {
                       return validator;
                     }
                   }
@@ -101,6 +103,9 @@ class CommonInputWidgets {
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
+        autocorrect: true,
+        autofocus: true,
+        autovalidate: true,
         validator: (value){
           if(value == null || value.isEmpty){
             return validator;
@@ -136,7 +141,7 @@ class CommonInputWidgets {
                   child: new Icon(icon),
                 ),
                 Container(
-                  width: 355,
+                  width: 335,
                   child: Card(
                       color: Colors.transparent,
                       elevation: 0,
@@ -152,6 +157,9 @@ class CommonInputWidgets {
                           focusNode: new AddGameFormState().focusNode,
                           decoration: InputDecoration(hintText: hintText),
                           controller: controller,
+                          autocorrect: true,
+                          autofocus: true,
+                          autovalidate: true,
                           validator: (value){
                             if(value == null || value.isEmpty){
                               return validator;

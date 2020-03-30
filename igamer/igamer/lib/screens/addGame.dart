@@ -57,13 +57,13 @@ class AddGameFormState extends State<AddGameForm> {
   //Initializing text editing controllers
   TextEditingController _titleController = new TextEditingController();
   TextEditingController _genreController = new TextEditingController();
-  TextEditingController _developerController = new TextEditingController();
+  TextEditingController _relDateController = new TextEditingController();
+  TextEditingController _pubDateController = new TextEditingController();
   TextEditingController _noOfUsersController = new TextEditingController();
-  TextEditingController _userScoreController = new TextEditingController();
   TextEditingController _briefDescController = new TextEditingController();
   TextEditingController _fullDescController = new TextEditingController();
-  TextEditingController _pubDateController = new TextEditingController();
-  TextEditingController _relDateController = new TextEditingController();
+  TextEditingController _developerController = new TextEditingController();
+  TextEditingController _userScoreController = new TextEditingController();
   CommonInputWidgets _commonInputWidgets = new CommonInputWidgets();
 
   //Initializing drop down values for ESRB Ratings

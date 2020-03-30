@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:igamer/database/crud.dart';
-import 'package:igamer/screens/addGame.dart';
 import 'package:igamer/screens/main.dart';
 import 'package:igamer/screens/updateGame.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -66,6 +65,9 @@ class GameDetailPage extends StatelessWidget {
                 ),
               ),
 
+                  // Published Date
+                  getDetailRow("Published On", game.publishedDate),
+
                   // Released Date
                   getDetailRow("Released On", game.releaseDate),
 
@@ -98,35 +100,29 @@ class GameDetailPage extends StatelessWidget {
                   // No of Users
                   getDetailRowHorizontal("No of Users", game.noOfUsers),
 
+                  //update option
                   new ListTile(
                     trailing: RaisedButton(
                       child: Text("Edit"),
                       color: Colors.blue,
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                new UpdateGame())); // Navigates to Update Game screen
+                            context, MaterialPageRoute(builder: (context) => UpdateGame(game: game)),
+                        ); // Navigates to Update Game screen
                       },
                     ),
                   ),
 
+                  //delete option
                   new ListTile(
                     trailing: RaisedButton(
                       child: Text("Delete"),
                       color: Colors.red,
                       onPressed: () {
-                        try {
-                          new CRUD().deleteGame(game.reference);
-                        } catch (e) {
-                          print(e);
-                        }
+                        new CRUD().deleteGame(context, game.reference);
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                new MyHomePage())); // Navigates to Add Game screen
+                          context, MaterialPageRoute(builder: (context) => MyHomePage()),
+                        ); //Navigates to Home Page after deleted
                       },
                     ),
                   )

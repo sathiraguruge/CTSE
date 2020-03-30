@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:igamer/database/gameRecord.dart';
 
 //  gameID|this.title|publishedDate|gameDescription|imageLink|genre|developer|releaseDate|fullDescription|esrbRating|userScore|noOfUsers
@@ -19,7 +21,6 @@ class CRUD {
 
   // Collection name
   final String _collection = "games";
-  DocumentReference reference;
 
   // Add a new game
   Future<void> addGame(GameRecord gameRecord) async {
@@ -37,7 +38,7 @@ class CRUD {
   }
 
   // Update an existing game
-  Future<void> editGame(GameRecord gameRecord) async {
+  Future<void> editGame(GameRecord gameRecord, DocumentReference reference) async {
     await _db.collection("games").document(reference.documentID).updateData(gameRecord.toMap()).then(
             (documentReference) {
               print(reference.documentID);
@@ -47,8 +48,36 @@ class CRUD {
   }
 
   //Delete an existing game
-  Future<void> deleteGame(DocumentReference reference) async {
-    _db.collection("games").document(reference.documentID).delete();
+  Future<void> deleteGame(BuildContext context, DocumentReference reference) async {
+      if (await showConfirmationDialog(context)) {
+        try {
+          await _db.collection("games").document(reference.documentID).delete();
+        } catch (e) {
+          print(e);
+        }
+      }
   }
 
+  //show confirmation box when deleting
+  Future<bool> showConfirmationDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => AlertDialog(
+          content: Text('Are you sure you want to delete?'),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Colors.red,
+              child: Text('Delete'),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+            FlatButton(
+              textColor: Colors.black,
+              child: Text('No'),
+              onPressed: () => Navigator.pop(context, false),
+            )
+          ],
+        )
+    );
+  }
 }
