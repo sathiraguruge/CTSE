@@ -74,7 +74,7 @@ class CRUD {
             FlatButton(
               textColor: Colors.black,
               child: Text('No'),
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () => Navigator.pop(context),
             )
           ],
         )

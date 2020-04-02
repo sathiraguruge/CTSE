@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:igamer/database/crud.dart';
-import 'package:igamer/screens/main.dart';
 import 'package:igamer/screens/updateGame.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'appBar.dart';
@@ -12,6 +10,7 @@ void main() {
   runApp(GameDetailPage(null));
 }
 
+// ignore: must_be_immutable
 class GameDetailPage extends StatelessWidget {
   GameRecord game;
 
@@ -22,113 +21,100 @@ class GameDetailPage extends StatelessWidget {
     return MaterialApp(
       title: game.title,
       home: Scaffold(
-          appBar: new CustomizedAppBar(game.title).getAppBar(),
-          // get customized app bar
-          drawer: new CustomizedDrawer(context).getDrawer(),
-          // get customized app drawer
-          body: SingleChildScrollView(
-              child: Column(
-            children: <Widget>[
-              // Image
-              new Container(
-                padding: const EdgeInsets.all(8.0),
-                child: CachedNetworkImage(
-                  imageUrl: game.imageLink, width: 400, height: 187, fit: BoxFit.fitWidth,
-                  placeholder: (context, url) => Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              child: JumpingDotsProgressIndicator(
-                                fontSize: 20,
-                                numberOfDots: 5,
-                                dotSpacing: 10,
-                                milliseconds: 250,
-                              ),
+        appBar: new CustomizedAppBar.fromGameDetail(game.title, context, this.game).getAppBar(),
+        // get customized app bar
+        drawer: new CustomizedDrawer(context).getDrawer(),
+        // get customized app drawer
+        body: SingleChildScrollView(
+            child: Column(
+          children: <Widget>[
+            // Image
+            new Container(
+              padding: const EdgeInsets.all(8.0),
+              child: CachedNetworkImage(
+                imageUrl: game.imageLink,
+                width: 400,
+                height: 187,
+                fit: BoxFit.fitWidth,
+                placeholder: (context, url) => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: JumpingDotsProgressIndicator(
+                              fontSize: 20,
+                              numberOfDots: 5,
+                              dotSpacing: 10,
+                              milliseconds: 250,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Container(
-                    margin: const EdgeInsets.only(
-                        top: 10, bottom: 10, left: 10, right: 10),
-                    child: Center(
-                      child:
-                          Image.asset("assets/images/no-image-available.png"),
-                    ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  margin: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 10, right: 10),
+                  child: Center(
+                    child: Image.asset("assets/images/no-image-available.png"),
                   ),
                 ),
               ),
+            ),
 
-                  // Published Date
-                  getDetailRow("Published On", game.publishedDate),
+            // Published Date
+            getDetailRow("Published On", game.publishedDate),
 
-                  // Released Date
-                  getDetailRow("Released On", game.releaseDate),
+            // Released Date
+            getDetailRow("Released On", game.releaseDate),
 
-                  // Full Description
-                  new Container(
-                    margin: const EdgeInsets.only(
-                        left: 10, bottom: 5, right: 10),
-                    child: new Text(
-                      game.fullDescription,
-                      style: new TextStyle(
-                          fontSize: 16,
-                          height: 1.5,
-                          fontFamily: 'SanFrancisco'),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
+            // Full Description
+            new Container(
+              margin: const EdgeInsets.only(left: 10, bottom: 5, right: 10),
+              child: new Text(
+                game.fullDescription,
+                style: new TextStyle(
+                    fontSize: 16, height: 1.5, fontFamily: 'SanFrancisco'),
+                textAlign: TextAlign.justify,
+              ),
+            ),
 
-                  // Genre
-                  getDetailRow("Genre", game.genre),
+            // Genre
+            getDetailRow("Genre", game.genre),
 
-                  // Developer
-                  getDetailRow("Developer", game.developer),
+            // Developer
+            getDetailRow("Developer", game.developer),
 
-                  // ESRB Rating
-                  getDetailRow("ESRB Rating", game.esrbRating),
+            // ESRB Rating
+            getDetailRow("ESRB Rating", game.esrbRating),
 
-                  // User Score
-                  getDetailRowHorizontal("User Score", game.userScore),
+            // User Score
+            getDetailRowHorizontal("User Score", game.userScore),
 
-                  // No of Users
-                  getDetailRowHorizontal("No of Users", game.noOfUsers),
+            // No of Users
+            getDetailRowHorizontal("No of Users", game.noOfUsers),
 
-                  //update option
-                  new ListTile(
-                    trailing: RaisedButton(
-                      child: Text("Edit"),
-                      color: Colors.blue,
-                      onPressed: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => UpdateGame(game: game)),
-                        ); // Navigates to Update Game screen
-                      },
-                    ),
-                  ),
-
-                  //delete option
-                  new ListTile(
-                    trailing: RaisedButton(
-                      child: Text("Delete"),
-                      color: Colors.red,
-                      onPressed: () {
-                        new CRUD().deleteGame(context, game.reference);
-                        Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => MyHomePage()),
-                        ); //Navigates to Home Page after deleted
-                      },
-                    ),
-                  )
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ))),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        )),
+        //update option
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        UpdateGame(game: game))); // Navigates to Add Game screen
+          },
+          tooltip: 'Increment',
+          child: Icon(Icons.edit),
+          backgroundColor: Colors.orange,
+        ),
+      ),
     );
   }
 
