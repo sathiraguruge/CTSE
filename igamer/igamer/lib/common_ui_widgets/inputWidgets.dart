@@ -41,7 +41,7 @@ class CommonInputWidgets {
   // this function return a date picker
   Container getDatePicker(
       String label, IconData icon, TextEditingController controller, String validator, FocusNode focusNode) {
-    final format = DateFormat("dd MMMM, yyyy");
+    final format = DateFormat("dd MM, yyyy");
 
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
@@ -73,11 +73,11 @@ class CommonInputWidgets {
                   autofocus: true,
                   autovalidate: true,
                   validator: (value) {
-                    if (value != null) {
-                      return null;
+                    if (value.toString() == null) {
+                      return validator;
                     }
                     else {
-                      return validator;
+                      return null;
                     }
                   }
               ),

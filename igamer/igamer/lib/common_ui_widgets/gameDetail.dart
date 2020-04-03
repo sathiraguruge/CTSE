@@ -66,9 +66,6 @@ class GameDetailPage extends StatelessWidget {
               ),
             ),
 
-            // Published Date
-            getDetailRow("Published On", game.publishedDate),
-
             // Released Date
             getDetailRow("Released On", game.releaseDate),
 

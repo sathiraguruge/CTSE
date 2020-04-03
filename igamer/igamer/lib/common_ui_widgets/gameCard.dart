@@ -16,7 +16,16 @@ class GameCard extends StatelessWidget {
     TextStyle textStyle = Theme.of(context).textTheme.display1;
     if (selected)
       textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
-    return Card(
+    return new Container(
+      decoration: new BoxDecoration(
+        boxShadow: [
+          new BoxShadow(
+            color: Colors.transparent,
+            blurRadius: 50
+          )
+        ]
+      ),
+     child : new Card(
         margin: const EdgeInsets.only(bottom: 30),
         color: Colors.white,
         child: new InkWell(
@@ -89,6 +98,6 @@ class GameCard extends StatelessWidget {
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
-        ));
+        )));
   }
 }
