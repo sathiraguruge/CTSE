@@ -95,9 +95,8 @@ class UpdateGameFormState extends State<UpdateGameForm> {
     _dropDownMenuItems = _buildAndGetDropDownMenuItems(_ratings);
     _selectedESRBRating = widget.gameRecord.esrbRating;
     _greyOutBackground = false;
-    //_image = null;
 
-    _image = new File(widget.gameRecord.imageLink);
+    _image = new File(widget.gameRecord.imageLink != null ? widget.gameRecord.imageLink : '');
     Image.file(_image);
 
     //setting values through constructor
@@ -265,12 +264,19 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                               Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text('Updating Existing Game Review'),
                               ));
-                              ImageUploader uploader = new ImageUploader(
-                                  _titleController.text +
-                                      "-" +
-                                      widget.gameRecord.gameID.toString(),
-                                  _image);
-                              var imageURL = await uploader.uploadFile();
+
+                              var imageURL ;
+                              if (_showOriginalImage == false) {
+                                ImageUploader uploader = new ImageUploader(
+                                    _titleController.text +
+                                        "-" +
+                                        widget.gameRecord.gameID.toString(),
+                                    _image);
+                                imageURL = await uploader.uploadFile();
+                              }
+                              else {
+                                imageURL = widget.gameRecord.imageLink;
+                              }
                               GameRecord game = new GameRecord(
                                   widget.gameRecord.gameID,
                                   _titleController.text,
