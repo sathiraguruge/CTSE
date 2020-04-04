@@ -347,8 +347,17 @@ class UpdateGameFormState extends State<UpdateGameForm> {
     });
   }
 
+  // this function gets an image from the camera and set to _image
+  Future _getImageFromCamera() async {
+    return ImagePicker.pickImage(source: ImageSource.camera).then((file) {
+      setState(() {
+        _image = file;
+      });
+    });
+  }
+
   // this function picks an image from the gallery and set to _image
-  Future _getImage() async {
+  Future _getImageFromGallery() async {
     return ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
       setState(() {
         _image = file;
@@ -377,15 +386,23 @@ class UpdateGameFormState extends State<UpdateGameForm> {
         _image == null ? new Text('No image selected.') : Image.file(_image),
         // if no image is selected show Text else show the image
         _image == null // if no image is selected, show Choose Image button
-            ? new RaisedButton(
-                child: Text('Choose Image'),
-                onPressed: () {
-                  _getImage();
-                },
-                color: Colors.cyan.withOpacity(0.9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0)))
-            : Container(),
+            ? new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FloatingActionButton(
+              heroTag: 'btn_camera',
+              onPressed: _getImageFromCamera,
+              tooltip: 'Pick Image',
+              child: Icon(Icons.add_a_photo),
+            ),
+            FloatingActionButton(
+              heroTag: 'btn_gallery',
+              onPressed: _getImageFromGallery,
+              tooltip: 'Pick Image',
+              child: Icon(Icons.wallpaper),
+            )
+          ],
+        ): Container(),
         _image != null // if image is selected, show Remove Button
             ? new Container(
                 margin: const EdgeInsets.only(top: 10, bottom: 20),
