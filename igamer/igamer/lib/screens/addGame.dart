@@ -38,6 +38,7 @@ class AddGame extends StatelessWidget {
 class AddGameForm extends StatefulWidget {
   final String title;
 
+  //Constructor
   AddGameForm({Key key, this.title}) : super(key: key);
 
   @override
@@ -64,6 +65,8 @@ class AddGameFormState extends State<AddGameForm> {
   TextEditingController _fullDescController = new TextEditingController();
   TextEditingController _developerController = new TextEditingController();
   TextEditingController _userScoreController = new TextEditingController();
+
+  //Initializing an object from CommonInputWidgets class
   CommonInputWidgets _commonInputWidgets = new CommonInputWidgets();
 
   //Initializing drop down values for ESRB Ratings
@@ -100,6 +103,7 @@ class AddGameFormState extends State<AddGameForm> {
         child: Stack(
           children: <Widget>[
             if (_greyOutBackground) _getCircularProgressIndicator(),
+            //display an empty form
             Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -108,6 +112,7 @@ class AddGameFormState extends State<AddGameForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _getImagePicker(),
+                    //Title field
                     _commonInputWidgets.getTextField(
                         "Game Title",
                         "Forza Horizon",
@@ -115,6 +120,7 @@ class AddGameFormState extends State<AddGameForm> {
                         _titleController,
                         "Game title field cannot be empty",
                         focusNode),
+                    //Genre field
                     _commonInputWidgets.getTextField(
                         "Genre",
                         "Racing, Simulation, Automobile",
@@ -122,18 +128,21 @@ class AddGameFormState extends State<AddGameForm> {
                         _genreController,
                         "Genre field cannot be empty",
                         focusNode),
+                    //Released Date field
                     _commonInputWidgets.getDatePicker(
                         "Released Date",
                         Icons.calendar_today,
                         _relDateController,
                         "Released Date field cannot be empty",
                         focusNode),
+                    //Published Date field
                     _commonInputWidgets.getDatePicker(
                         "Published Date",
                         Icons.new_releases,
                         _pubDateController,
                         "Published Date field cannot be empty",
                         focusNode),
+                    //No. of users field
                     _commonInputWidgets.getNumberTextField(
                         "No Of Users",
                         "2",
@@ -142,6 +151,7 @@ class AddGameFormState extends State<AddGameForm> {
                         _noOfUsersController,
                         "No. of users field cannot be empty",
                         focusNode),
+                    //Brief Description field
                     _commonInputWidgets.getTextArea(
                         "Brief Description",
                         "This will appear on main screen",
@@ -149,6 +159,7 @@ class AddGameFormState extends State<AddGameForm> {
                         _briefDescController,
                         "Brief Description field cannot be empty",
                         focusNode),
+                    //Full Description field
                     _commonInputWidgets.getTextArea(
                         "Full Description",
                         "This will appear on detail screen",
@@ -156,7 +167,9 @@ class AddGameFormState extends State<AddGameForm> {
                         _fullDescController,
                         "Full Description field cannot be empty",
                         focusNode),
+                    //ESRB Rating dropdown field
                     _getDropDown("ESRB Rating", Icons.rate_review),
+                    //Developer field
                     _commonInputWidgets.getTextField(
                         "Developer",
                         "Playground Games",
@@ -164,6 +177,7 @@ class AddGameFormState extends State<AddGameForm> {
                         _developerController,
                         "Developer field cannot be empty",
                         focusNode),
+                    //User score field
                     _commonInputWidgets.getNumberTextField(
                         "User Score",
                         "7.8",
@@ -181,10 +195,12 @@ class AddGameFormState extends State<AddGameForm> {
                               setState(() {
                                 _greyOutBackground = true;
                               });
+                              //if the form fields are validated
                               if (_formKey.currentState.validate()) {
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   content: Text('Adding New Game Review'),
                                 ));
+                                //uploads the image
                                 ImageUploader uploader = new ImageUploader(
                                     _titleController.text +
                                         "-" +
@@ -215,10 +231,12 @@ class AddGameFormState extends State<AddGameForm> {
                                         builder: (context) => MyHomePage()));
                               }
                             },
+                            //Submit button
                             child: new Text('Submit'),
                             color: Colors.orange.withOpacity(0.9),
                             shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(10.0))),
+                        //reset button
                         new RaisedButton(
                             padding: const EdgeInsets.all(10.0),
                             onPressed: () {
@@ -392,6 +410,7 @@ class AddGameFormState extends State<AddGameForm> {
     ));
   }
 
+  //function which returns Circular Progress Indicator
   Center _getCircularProgressIndicator() {
     return Center(
         child: new Column(

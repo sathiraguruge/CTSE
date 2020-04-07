@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// this class contain attributes and method for Alert Box
+// this class contains attributes and method for an Alert Box
 class AppAlertBox {
   BuildContext context;
   String title;

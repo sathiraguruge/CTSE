@@ -24,6 +24,7 @@ void main() => runApp(UpdateGame());
 class UpdateGame extends StatelessWidget {
   final GameRecord game;
 
+  //Constructor
   const UpdateGame({Key key, this.game}) : super(key: key);
 
   @override
@@ -46,6 +47,7 @@ class UpdateGameForm extends StatefulWidget {
   final String title;
   final GameRecord gameRecord;
 
+  //Constructor
   UpdateGameForm({Key key, this.title, this.gameRecord}) : super(key: key);
 
   @override
@@ -96,10 +98,11 @@ class UpdateGameFormState extends State<UpdateGameForm> {
     _selectedESRBRating = widget.gameRecord.esrbRating;
     _greyOutBackground = false;
 
+    //setting value of image link through File Constructor for image removal operation
     _image = new File(widget.gameRecord.imageLink != null ? widget.gameRecord.imageLink : '');
     Image.file(_image);
 
-    //setting values through constructor
+    //setting values through Text Editing Controllers
     _titleController = TextEditingController(
         text: widget.gameRecord.title != null ? widget.gameRecord.title : '');
     _genreController = TextEditingController(
@@ -142,6 +145,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
       body: Stack(
         children: <Widget>[
           if (_greyOutBackground) _getCircularProgressIndicator(),
+          //display a form with pre-filled fields
           Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -149,6 +153,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  //Displays previously uploaded image in the AddForm
                   _showOriginalImage == true
                       ? CachedNetworkImage(
                           imageUrl: widget.gameRecord.imageLink,
@@ -187,6 +192,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                         )
                       : Container(),
                   _getImagePicker(),
+                  //Title field
                   _commonInputWidgets.getTextField(
                       "Game Title",
                       "Forza Horizon",
@@ -194,6 +200,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _titleController,
                       "Game title field cannot be empty",
                       focusNode),
+                  //Genre field
                   _commonInputWidgets.getTextField(
                       "Genre",
                       "Racing, Simulation, Automobile",
@@ -201,18 +208,21 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _genreController,
                       "Genre field cannot be empty",
                       focusNode),
+                  //Released Date field
                   _commonInputWidgets.getDatePicker(
                       "Released Date",
                       Icons.calendar_today,
                       _relDateController,
                       "Released Date field cannot be empty",
                       focusNode),
+                  //Published Date field
                   _commonInputWidgets.getDatePicker(
                       "Published Date",
                       Icons.new_releases,
                       _pubDateController,
                       "Published Date field cannot be empty",
                       focusNode),
+                  //No. of users field
                   _commonInputWidgets.getNumberTextField(
                       "No Of Users",
                       "2",
@@ -221,6 +231,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _noOfUsersController,
                       "No. of users field cannot be empty",
                       focusNode),
+                  //Brief Description field
                   _commonInputWidgets.getTextArea(
                       "Brief Description",
                       "This will appear on main screen",
@@ -228,6 +239,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _briefDescController,
                       "Brief Description field cannot be empty",
                       focusNode),
+                  //Full Description field
                   _commonInputWidgets.getTextArea(
                       "Full Description",
                       "This will appear on detail screen",
@@ -235,7 +247,9 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _fullDescController,
                       "Full Description field cannot be empty",
                       focusNode),
+                  //ESRB Rating dropdown field
                   _getDropDown("ESRB Rating", Icons.rate_review),
+                  //Developer field
                   _commonInputWidgets.getTextField(
                       "Developer",
                       "Playground Games",
@@ -243,6 +257,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                       _developerController,
                       "Developer field cannot be empty",
                       focusNode),
+                  //User score field
                   _commonInputWidgets.getNumberTextField(
                       "User Score",
                       "7.8",
@@ -260,12 +275,14 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                             setState(() {
                               _greyOutBackground = true;
                             });
+                            //if the form fields are validated
                             if (_formKey.currentState.validate()) {
                               Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text('Updating Existing Game Review'),
                               ));
 
                               var imageURL ;
+                              //uploads the image if the image is updated only
                               if (_showOriginalImage == false) {
                                 ImageUploader uploader = new ImageUploader(
                                     _titleController.text +
@@ -274,6 +291,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                                     _image);
                                 imageURL = await uploader.uploadFile();
                               }
+                              //keeps the previously added image
                               else {
                                 imageURL = widget.gameRecord.imageLink;
                               }
@@ -304,10 +322,12 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                               _greyOutBackground = false;
                             });
                           },
+                          //Submit button
                           child: new Text('Submit'),
                           color: Colors.orange.withOpacity(0.9),
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(10.0))),
+                      //reset button
                       new RaisedButton(
                           padding: const EdgeInsets.all(10.0),
                           onPressed: () {
@@ -476,6 +496,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
     ));
   }
 
+  //function which returns Circular Progress Indicator
   Center _getCircularProgressIndicator() {
     return Center(
         child: new Column(
