@@ -67,6 +67,7 @@ class GameRecord {
     };
   }
 
+  //used for listing games
   GameRecord.fromSnapshot(DocumentSnapshot snapshot):
         this.fromMap(snapshot.data, reference: snapshot.reference);
 

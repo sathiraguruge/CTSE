@@ -14,6 +14,7 @@ void main() {
   ));
 }
 
+//About us page
 class AboutScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,9 @@ class AboutScreenPage extends StatelessWidget {
                       Colors.black.withOpacity(0.1), BlendMode.softLight)),
             ),
           ),
-          Column(
+          //returns the title
+          SingleChildScrollView(
+            child: Column(
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(top: 30),
@@ -40,6 +43,7 @@ class AboutScreenPage extends StatelessWidget {
                   style: TextStyle(fontSize: 60, fontFamily: 'NunitoSans'),
                 ),
               ),
+              //returns the version of the app
               Container(
                 margin: const EdgeInsets.only(top: 10),
                 alignment: Alignment.center,
@@ -48,6 +52,7 @@ class AboutScreenPage extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontFamily: 'SanFrancisco'),
                 ),
               ),
+              //returns image
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(top: 30, bottom: 20),
@@ -62,7 +67,7 @@ class AboutScreenPage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 30),
                 child: RaisedButton(
                   child: Text(
                     'Terms and Conditions',
@@ -71,14 +76,16 @@ class AboutScreenPage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 20),
                 child: RaisedButton(
-                  child: Text('Open source licenses',
+                  child: Text(
+                      'Open source licenses',
                       style: TextStyle(fontSize: 18, fontFamily: 'SanFrancisco')),
                 ),
               ),
             ],
-          )
+          ),
+          ),
         ],
       ),
       drawer: new CustomizedDrawer(context).getDrawer(),

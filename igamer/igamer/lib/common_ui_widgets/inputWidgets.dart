@@ -14,16 +14,19 @@ class CommonInputWidgets {
     return (Container(
       height: 100,
       child: TextFormField(
+        //focus node
         textInputAction: TextInputAction.next,
         onEditingComplete: (){
           FocusScope.of(new AddGameFormState().context).requestFocus(focusNode);
         },
         focusNode: new AddGameFormState().focusNode,
+        //decoration to the field
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
         autocorrect: true,
         autofocus: true,
+        //validations
         autovalidate: true,
         validator: (value){
           if(value == null || value.isEmpty){
@@ -41,6 +44,7 @@ class CommonInputWidgets {
   // this function return a date picker
   Container getDatePicker(
       String label, IconData icon, TextEditingController controller, String validator, FocusNode focusNode) {
+    //date format
     final format = DateFormat("dd MM, yyyy");
 
     return Container(
@@ -61,6 +65,7 @@ class CommonInputWidgets {
               margin: const EdgeInsets.only(left: 20),
               child: DateTimeField(
                 format: format,
+                //uses datepicker option
                 onShowPicker: (context, currentValue) {
                   return showDatePicker(
                       context: context,
@@ -71,6 +76,7 @@ class CommonInputWidgets {
                   controller: controller,
                   autocorrect: true,
                   autofocus: true,
+                  //validations
                   autovalidate: true,
                   validator: (value) {
                     if (value.toString() == null) {
@@ -95,16 +101,19 @@ class CommonInputWidgets {
     return (Container(
       height: 100,
       child: TextFormField(
+        //focus node
         textInputAction: TextInputAction.next,
         onEditingComplete: (){
           FocusScope.of(new AddGameFormState().context).requestFocus(focusNode);
         },
         focusNode: new AddGameFormState().focusNode,
+        //field decorations
         decoration: InputDecoration(
             labelText: labelText, hintText: hintText, icon: Icon(icon)),
         controller: controller,
         autocorrect: true,
         autofocus: true,
+        //validations
         autovalidate: true,
         validator: (value){
           if(value == null || value.isEmpty){
@@ -150,15 +159,18 @@ class CommonInputWidgets {
                         padding: EdgeInsets.all(1.0),
                         child: TextFormField(
                           maxLines: 8,
+                          //focus node
                           textInputAction: TextInputAction.next,
                           onEditingComplete: (){
                             FocusScope.of(new AddGameFormState().context).requestFocus(focusNode);
                           },
                           focusNode: new AddGameFormState().focusNode,
+                          //field decorations
                           decoration: InputDecoration(hintText: hintText),
                           controller: controller,
                           autocorrect: true,
                           autofocus: true,
+                          //validations
                           autovalidate: true,
                           validator: (value){
                             if(value == null || value.isEmpty){

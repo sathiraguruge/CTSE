@@ -6,6 +6,7 @@ import 'appBar.dart';
 import '../database/gameRecord.dart';
 import 'drawer.dart';
 
+//main method of GameDetailPage
 void main() {
   runApp(GameDetailPage(null));
 }
@@ -19,7 +20,7 @@ class GameDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: game.title,
+      title: game.title, //returns game title in the Appbar
       home: Scaffold(
         appBar: new CustomizedAppBar.fromGameDetail(game.title, context, this.game).getAppBar(),
         // get customized app bar

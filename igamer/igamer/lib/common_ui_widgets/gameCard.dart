@@ -6,6 +6,8 @@ import 'gameDetail.dart';
 
 // this class contains methods and attributes used for Card in the List in the app
 class GameCard extends StatelessWidget {
+
+  //Constructor
   const GameCard({Key key, this.game, this.selected: false}) : super(key: key);
 
   final GameRecord game;
@@ -14,6 +16,7 @@ class GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.display1;
+    //if the option is selected, returning a card
     if (selected)
       textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
     return new Container(
@@ -29,9 +32,10 @@ class GameCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 30),
         color: Colors.white,
         child: new InkWell(
+          // if the card is pressed navigate to Detailed Screen
           onTap: () => {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GameDetailPage(game))) // if the card is pressed navigate to Detailed Screen
+                MaterialPageRoute(builder: (context) => GameDetailPage(game),),),
           },
           child: Column(
             children: <Widget>[
