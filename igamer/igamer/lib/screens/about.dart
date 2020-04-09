@@ -1,3 +1,4 @@
+// In the file About screen is implemented
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:igamer/common_ui_widgets/appBar.dart';

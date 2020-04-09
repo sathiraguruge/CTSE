@@ -1,9 +1,9 @@
+// this class contains attributes and methods for App Drawer
 import 'package:flutter/material.dart';
 import 'package:igamer/screens/about.dart';
 import 'package:igamer/screens/help.dart';
 import 'package:igamer/screens/main.dart';
 
-// this class contains attributes and methods for App Drawer
 class CustomizedDrawer {
   final Color backgroundColor = Colors.orange;
   BuildContext context;

@@ -1,3 +1,4 @@
+// this class contains all the common input widgets used in the app
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,6 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:igamer/screens/addGame.dart';
 import 'package:intl/intl.dart';
 
-// this class contains all the common input widgets used in the app
 class CommonInputWidgets {
 
   // this function returns a TextField

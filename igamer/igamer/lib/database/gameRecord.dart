@@ -1,6 +1,6 @@
+// This class contains attributes and relevant methods for the Game entity
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// This class contains attributes and relevant methods for the Game entity
 class GameRecord {
   final int gameID;
   final String title;

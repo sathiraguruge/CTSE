@@ -1,3 +1,4 @@
+// Game Detail Page is implemented in this dart file
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:igamer/screens/updateGame.dart';
@@ -22,7 +23,9 @@ class GameDetailPage extends StatelessWidget {
     return MaterialApp(
       title: game.title, //returns game title in the Appbar
       home: Scaffold(
-        appBar: new CustomizedAppBar.fromGameDetail(game.title, context, this.game).getAppBar(),
+        appBar:
+            new CustomizedAppBar.fromGameDetail(game.title, context, this.game)
+                .getAppBar(),
         // get customized app bar
         drawer: new CustomizedDrawer(context).getDrawer(),
         // get customized app drawer
@@ -95,7 +98,6 @@ class GameDetailPage extends StatelessWidget {
 
             // No of Users
             getDetailRowHorizontal("No of Users", game.noOfUsers),
-
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         )),
@@ -105,8 +107,8 @@ class GameDetailPage extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        UpdateGame(game: game))); // Navigates to Add Game screen
+                    builder: (context) => UpdateGame(
+                        game: game))); // Navigates to Add Game screen
           },
           tooltip: 'Increment',
           child: Icon(Icons.edit),

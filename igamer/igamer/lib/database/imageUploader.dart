@@ -1,8 +1,8 @@
+// This class is used for uploading an Image to firebase
 import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestoreker
 import 'package:path/path.dart' as Path;
 import 'dart:io';
 
-// This class is used for uploading an Image to firebase
 class ImageUploader {
   String _imagePath;
   File _image;

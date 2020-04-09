@@ -1,3 +1,4 @@
+// In the file main screen is implemented
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:igamer/database/crud.dart';
@@ -34,7 +35,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   // this function checks active internet connection
   // if not, it will popup an Alert Box
   _checkInternetConnection(BuildContext context) async {
@@ -55,12 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new CustomizedAppBar(pageTitle).getAppBar(), // Calling Custom build app bar
+      appBar: new CustomizedAppBar(pageTitle).getAppBar(),
+      // Calling Custom build app bar
       body: _buildBody(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddGame())); // Navigates to Add Game screen
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddGame())); // Navigates to Add Game screen
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

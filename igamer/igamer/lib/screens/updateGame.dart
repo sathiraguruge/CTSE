@@ -1,3 +1,4 @@
+// In the file update game screen is implemented
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -99,7 +100,8 @@ class UpdateGameFormState extends State<UpdateGameForm> {
     _greyOutBackground = false;
 
     //setting value of image link through File Constructor for image removal operation
-    _image = new File(widget.gameRecord.imageLink != null ? widget.gameRecord.imageLink : '');
+    _image = new File(
+        widget.gameRecord.imageLink != null ? widget.gameRecord.imageLink : '');
     Image.file(_image);
 
     //setting values through Text Editing Controllers
@@ -281,7 +283,7 @@ class UpdateGameFormState extends State<UpdateGameForm> {
                                 content: Text('Updating Existing Game Review'),
                               ));
 
-                              var imageURL ;
+                              var imageURL;
                               //uploads the image if the image is updated only
                               if (_showOriginalImage == false) {
                                 ImageUploader uploader = new ImageUploader(
@@ -407,22 +409,23 @@ class UpdateGameFormState extends State<UpdateGameForm> {
         // if no image is selected show Text else show the image
         _image == null // if no image is selected, show Choose Image button
             ? new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            FloatingActionButton(
-              heroTag: 'btn_camera',
-              onPressed: _getImageFromCamera,
-              tooltip: 'Pick Image',
-              child: Icon(Icons.add_a_photo),
-            ),
-            FloatingActionButton(
-              heroTag: 'btn_gallery',
-              onPressed: _getImageFromGallery,
-              tooltip: 'Pick Image',
-              child: Icon(Icons.wallpaper),
-            )
-          ],
-        ): Container(),
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'btn_camera',
+                    onPressed: _getImageFromCamera,
+                    tooltip: 'Pick Image',
+                    child: Icon(Icons.add_a_photo),
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'btn_gallery',
+                    onPressed: _getImageFromGallery,
+                    tooltip: 'Pick Image',
+                    child: Icon(Icons.wallpaper),
+                  )
+                ],
+              )
+            : Container(),
         _image != null // if image is selected, show Remove Button
             ? new Container(
                 margin: const EdgeInsets.only(top: 10, bottom: 20),

@@ -1,3 +1,4 @@
+// In the file add game screen is implemented
 import 'dart:async';
 import 'dart:math';
 
@@ -94,179 +95,180 @@ class AddGameFormState extends State<AddGameForm> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor:
-          _greyOutBackground == true ? Colors.grey : Colors.transparent,
-      body: new GestureDetector(
-        onTap: (){
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-        child: Stack(
-          children: <Widget>[
-            if (_greyOutBackground) _getCircularProgressIndicator(),
-            //display an empty form
-            Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _getImagePicker(),
-                    //Title field
-                    _commonInputWidgets.getTextField(
-                        "Game Title",
-                        "Forza Horizon",
-                        Icons.label,
-                        _titleController,
-                        "Game title field cannot be empty",
-                        focusNode),
-                    //Genre field
-                    _commonInputWidgets.getTextField(
-                        "Genre",
-                        "Racing, Simulation, Automobile",
-                        Icons.view_agenda,
-                        _genreController,
-                        "Genre field cannot be empty",
-                        focusNode),
-                    //Released Date field
-                    _commonInputWidgets.getDatePicker(
-                        "Released Date",
-                        Icons.calendar_today,
-                        _relDateController,
-                        "Released Date field cannot be empty",
-                        focusNode),
-                    //Published Date field
-                    _commonInputWidgets.getDatePicker(
-                        "Published Date",
-                        Icons.new_releases,
-                        _pubDateController,
-                        "Published Date field cannot be empty",
-                        focusNode),
-                    //No. of users field
-                    _commonInputWidgets.getNumberTextField(
-                        "No Of Users",
-                        "2",
-                        Icons.person,
-                        true,
-                        _noOfUsersController,
-                        "No. of users field cannot be empty",
-                        focusNode),
-                    //Brief Description field
-                    _commonInputWidgets.getTextArea(
-                        "Brief Description",
-                        "This will appear on main screen",
-                        Icons.assignment,
-                        _briefDescController,
-                        "Brief Description field cannot be empty",
-                        focusNode),
-                    //Full Description field
-                    _commonInputWidgets.getTextArea(
-                        "Full Description",
-                        "This will appear on detail screen",
-                        Icons.videogame_asset,
-                        _fullDescController,
-                        "Full Description field cannot be empty",
-                        focusNode),
-                    //ESRB Rating dropdown field
-                    _getDropDown("ESRB Rating", Icons.rate_review),
-                    //Developer field
-                    _commonInputWidgets.getTextField(
-                        "Developer",
-                        "Playground Games",
-                        Icons.build,
-                        _developerController,
-                        "Developer field cannot be empty",
-                        focusNode),
-                    //User score field
-                    _commonInputWidgets.getNumberTextField(
-                        "User Score",
-                        "7.8",
-                        Icons.score,
-                        false,
-                        _userScoreController,
-                        "User Score field cannot be empty",
-                        focusNode),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        new RaisedButton(
-                            padding: const EdgeInsets.all(10.0),
-                            onPressed: () async {
-                              setState(() {
-                                _greyOutBackground = true;
-                              });
-                              //if the form fields are validated
-                              if (_formKey.currentState.validate()) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text('Adding New Game Review'),
-                                ));
-                                //uploads the image
-                                ImageUploader uploader = new ImageUploader(
-                                    _titleController.text +
-                                        "-" +
-                                        _generateID().toString(),
-                                    _image);
-                                var imageURL = await uploader.uploadFile();
-                                GameRecord game = new GameRecord(
-                                    _generateID(),
-                                    _titleController.text,
-                                    _pubDateController.text,
-                                    _briefDescController.text,
-                                    imageURL,
-                                    _genreController.text,
-                                    _developerController.text,
-                                    _relDateController.text,
-                                    _fullDescController.text,
-                                    _selectedESRBRating,
-                                    _userScoreController.text,
-                                    _noOfUsersController.text,
-                                    null);
-                                await CRUD().addGame(game);
+        backgroundColor:
+            _greyOutBackground == true ? Colors.grey : Colors.transparent,
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: Stack(
+            children: <Widget>[
+              if (_greyOutBackground) _getCircularProgressIndicator(),
+              //display an empty form
+              Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _getImagePicker(),
+                      //Title field
+                      _commonInputWidgets.getTextField(
+                          "Game Title",
+                          "Forza Horizon",
+                          Icons.label,
+                          _titleController,
+                          "Game title field cannot be empty",
+                          focusNode),
+                      //Genre field
+                      _commonInputWidgets.getTextField(
+                          "Genre",
+                          "Racing, Simulation, Automobile",
+                          Icons.view_agenda,
+                          _genreController,
+                          "Genre field cannot be empty",
+                          focusNode),
+                      //Released Date field
+                      _commonInputWidgets.getDatePicker(
+                          "Released Date",
+                          Icons.calendar_today,
+                          _relDateController,
+                          "Released Date field cannot be empty",
+                          focusNode),
+                      //Published Date field
+                      _commonInputWidgets.getDatePicker(
+                          "Published Date",
+                          Icons.new_releases,
+                          _pubDateController,
+                          "Published Date field cannot be empty",
+                          focusNode),
+                      //No. of users field
+                      _commonInputWidgets.getNumberTextField(
+                          "No Of Users",
+                          "2",
+                          Icons.person,
+                          true,
+                          _noOfUsersController,
+                          "No. of users field cannot be empty",
+                          focusNode),
+                      //Brief Description field
+                      _commonInputWidgets.getTextArea(
+                          "Brief Description",
+                          "This will appear on main screen",
+                          Icons.assignment,
+                          _briefDescController,
+                          "Brief Description field cannot be empty",
+                          focusNode),
+                      //Full Description field
+                      _commonInputWidgets.getTextArea(
+                          "Full Description",
+                          "This will appear on detail screen",
+                          Icons.videogame_asset,
+                          _fullDescController,
+                          "Full Description field cannot be empty",
+                          focusNode),
+                      //ESRB Rating dropdown field
+                      _getDropDown("ESRB Rating", Icons.rate_review),
+                      //Developer field
+                      _commonInputWidgets.getTextField(
+                          "Developer",
+                          "Playground Games",
+                          Icons.build,
+                          _developerController,
+                          "Developer field cannot be empty",
+                          focusNode),
+                      //User score field
+                      _commonInputWidgets.getNumberTextField(
+                          "User Score",
+                          "7.8",
+                          Icons.score,
+                          false,
+                          _userScoreController,
+                          "User Score field cannot be empty",
+                          focusNode),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          new RaisedButton(
+                              padding: const EdgeInsets.all(10.0),
+                              onPressed: () async {
                                 setState(() {
-                                  _greyOutBackground = false;
+                                  _greyOutBackground = true;
                                 });
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MyHomePage()));
-                              }
-                            },
-                            //Submit button
-                            child: new Text('Submit'),
-                            color: Colors.orange.withOpacity(0.9),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0))),
-                        //reset button
-                        new RaisedButton(
-                            padding: const EdgeInsets.all(10.0),
-                            onPressed: () {
-                              _formKey.currentState.reset();
-                              _clearImage();
-                              _titleController.clear();
-                              _genreController.clear();
-                              _relDateController.clear();
-                              _pubDateController.clear();
-                              _noOfUsersController.clear();
-                              _briefDescController.clear();
-                              _fullDescController.clear();
-                              _getlist();
-                              _developerController.clear();
-                              _userScoreController.clear();
-                            },
-                            child: new Text('Reset'),
-                            color: Colors.orange.withOpacity(0.9),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0)))
-                      ],
-                    ),
-                  ],
+                                //if the form fields are validated
+                                if (_formKey.currentState.validate()) {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text('Adding New Game Review'),
+                                  ));
+                                  //uploads the image
+                                  ImageUploader uploader = new ImageUploader(
+                                      _titleController.text +
+                                          "-" +
+                                          _generateID().toString(),
+                                      _image);
+                                  var imageURL = await uploader.uploadFile();
+                                  GameRecord game = new GameRecord(
+                                      _generateID(),
+                                      _titleController.text,
+                                      _pubDateController.text,
+                                      _briefDescController.text,
+                                      imageURL,
+                                      _genreController.text,
+                                      _developerController.text,
+                                      _relDateController.text,
+                                      _fullDescController.text,
+                                      _selectedESRBRating,
+                                      _userScoreController.text,
+                                      _noOfUsersController.text,
+                                      null);
+                                  await CRUD().addGame(game);
+                                  setState(() {
+                                    _greyOutBackground = false;
+                                  });
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyHomePage()));
+                                }
+                              },
+                              //Submit button
+                              child: new Text('Submit'),
+                              color: Colors.orange.withOpacity(0.9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0))),
+                          //reset button
+                          new RaisedButton(
+                              padding: const EdgeInsets.all(10.0),
+                              onPressed: () {
+                                _formKey.currentState.reset();
+                                _clearImage();
+                                _titleController.clear();
+                                _genreController.clear();
+                                _relDateController.clear();
+                                _pubDateController.clear();
+                                _noOfUsersController.clear();
+                                _briefDescController.clear();
+                                _fullDescController.clear();
+                                _getlist();
+                                _developerController.clear();
+                                _userScoreController.clear();
+                              },
+                              child: new Text('Reset'),
+                              color: Colors.orange.withOpacity(0.9),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
-      )
-    );
+              )
+            ],
+          ),
+        ));
   }
 
   // this function returns a random integer between 0 and 10000
@@ -319,23 +321,33 @@ class AddGameFormState extends State<AddGameForm> {
             style: TextStyle(fontSize: 25),
           ),
         ),
-        _image == null ? new Text('No image selected.') : Image.file(_image, height: 187, width: 400, fit: BoxFit.fitWidth,),
+        _image == null
+            ? new Text('No image selected.')
+            : Image.file(
+                _image,
+                height: 187,
+                width: 400,
+                fit: BoxFit.fitWidth,
+              ),
         // if no image is selected show Text else show the image
         _image == null // if no image is selected, show Choose Image button
             ? new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            FloatingActionButton(
-              heroTag: 'btn_camera',
-              onPressed: _getImageFromCamera,
-              tooltip: 'Pick Image',
-              child: Icon(Icons.add_a_photo),
-            ),
-            FloatingActionButton(
-              heroTag: 'btn_gallery',
-              onPressed: _getImageFromGallery,
-              tooltip: 'Pick Image',
-              child: Icon(Icons.wallpaper),),],)
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'btn_camera',
+                    onPressed: _getImageFromCamera,
+                    tooltip: 'Pick Image',
+                    child: Icon(Icons.add_a_photo),
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'btn_gallery',
+                    onPressed: _getImageFromGallery,
+                    tooltip: 'Pick Image',
+                    child: Icon(Icons.wallpaper),
+                  ),
+                ],
+              )
             : Container(),
         _image != null // if image is selected, show Remove Button
             ? new Container(
